@@ -22,7 +22,8 @@ function hexToRgb(hex) {
 class Main extends Component {
   state = {
     lineWidth: 2,
-    color: [255, 0, 0]
+    color: [255, 0, 0],
+    colorStroke: [0, 0, 0]
   }
   onChangelineWidthHandler = (val) => {
     this.setState({ lineWidth: val.target.value })
@@ -34,6 +35,10 @@ class Main extends Component {
     this.setState({ color: hexToRgb(color.hex) });
     
   };
+  onChangeColorStrokeHandler = (color, event) => {
+    this.setState({ colorStroke: hexToRgb(color.hex) });
+    
+  };
 
 
   
@@ -43,14 +48,16 @@ class Main extends Component {
       <div>
         <DeckMap lineWidth={this.state.lineWidth}
                  color={this.state.color} 
+                 colorStroke={this.state.colorStroke} 
         />
         <MenuTop name="@deck.gl/carto Demo" />
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
           <Row>
-            <Col xs={12} md={6} xl={3}>
+            <Col xs={8} md={3} xl={2}>
               <ToolsPanel name="Tools" 
                 lineWidth={this.state.lineWidth} onChangelineWidth={this.onChangelineWidthHandler}
                 color={this.state.color} onChangeColor={this.onChangeColorHandler}
+                colorStroke={this.state.colorStroke} onChangeColorStroke={this.onChangeColorStrokeHandler}
               />
             </Col> 
           </Row>

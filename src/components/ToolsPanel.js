@@ -22,14 +22,14 @@ class ToolsPanel extends Component {
 
 
     render() {
-      const { lineWidth , onChangelineWidth, onChangeColor } = this.props;
+      const { lineWidth , onChangelineWidth, onChangeColor, onChangeColorStroke } = this.props;
       return <Card>
       <Card.Header>{this.props.name}</Card.Header>
       <Card.Body>
         <Card.Title>Modify the values to apply the changes to the map .</Card.Title>
         <Form>
           <Form.Group controlId="formBasicRange">
-            <Form.Label>Line Width</Form.Label>
+            <Form.Label>Stroke Size</Form.Label>
             <Form.Control type="range" min="0" max="4" value={lineWidth}  onChange={onChangelineWidth}/>
           </Form.Group>
           <Form.Group controlId="formSelect">
@@ -39,9 +39,13 @@ class ToolsPanel extends Component {
          </select>
           </Form.Group>
           <Form.Group controlId="formSelect">
-            <Form.Label>Color: </Form.Label>
+            <Form.Label>Polygon Color: </Form.Label>
             <GithubPicker  onChangeComplete={onChangeColor}/>
           </Form.Group>
+          <Form.Group controlId="formSelect">
+            <Form.Label>Stroke Color: </Form.Label>
+            <GithubPicker  onChangeComplete={onChangeColorStroke}/>
+          </Form.Group>          
         </Form>
       </Card.Body>
     </Card>;

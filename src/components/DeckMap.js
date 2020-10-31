@@ -27,13 +27,14 @@ export default class DeckMap extends Component {
     const layer = new CartoSQLLayer({
       data: `SELECT * FROM public.ne_50m_admin_0_countries ${getContinentCondition(continent)}`,
       pointRadiusMinPixels: 6,
-      getLineColor: [0, 77, 90],
+      getLineColor: (object) => get_colour(object,this.props.colorStroke),
       getFillColor: (object) => get_colour(object,this.props.color),
       opacity: 0.8,
       lineWidthMinPixels: this.props.lineWidth,
       updateTriggers: {
         lineWidthMinPixels: this.props.lineWidth,
         getFillColor: (object) => get_colour(object,this.props.color),
+        getLineColor: (object) => get_colour(object,this.props.colorStroke),
       }
     });
 
@@ -43,8 +44,6 @@ export default class DeckMap extends Component {
           col = col.slice(1);
           usePound = true;
       }
-  
-  
       var r = col[0]  * amt;
       var g = col[1]  * amt;
       var b = col[2]  * amt;
