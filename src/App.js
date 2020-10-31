@@ -10,14 +10,8 @@ import MenuTop from './components/MenuTop';
 import ToolsPanel from './components/ToolsPanel';
 import DeckMap from './components/DeckMap';
 
-function hexToRgb(hex) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? 
-    [ parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16)]
-  : null;
-}
+import {hexToRgb} from './components/Utils.js';
+
 
 class Main extends Component {
   state = {

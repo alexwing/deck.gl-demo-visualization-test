@@ -3,6 +3,7 @@ import { CartoSQLLayer, setDefaultCredentials } from '@deck.gl/carto';
 
 import { StaticMap } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
+import {LightenDarkenColor} from './Utils.js';
 
 
 export default class DeckMap extends Component {
@@ -38,29 +39,6 @@ export default class DeckMap extends Component {
       }
     });
 
-    function LightenDarkenColor(col,amt) {
-      var usePound = false;
-      if ( col[0] == "#" ) {
-          col = col.slice(1);
-          usePound = true;
-      }
-      var r = col[0]  * amt;
-      var g = col[1]  * amt;
-      var b = col[2]  * amt;
-  
-      if ( r > 255 ) r = 255;
-      else if  (r < 0) r = 0;
-  
-
-      if ( b > 255 ) b = 255;
-      else if  (b < 0) b = 0;
-
-      if ( g > 255 ) g = 255;
-      else if  ( g < 0 ) g = 0;
-  
-      //return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-      return[r,g,b];
-  }
 
     function get_colour(object,color) {
       
