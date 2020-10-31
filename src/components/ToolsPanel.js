@@ -17,7 +17,7 @@ class ToolsPanel extends Component {
     const {name, lineWidth,continent, onChangelineWidth, onChangeColor, onChangeColorStroke,onChangeContinent } = this.props;
     return <Accordion defaultActiveKey="0">
     <Card>
-    <Accordion.Toggle as={Card.Header} eventKey="0">
+    <Accordion.Toggle as={Card.Header} eventKey="0" >
       {name}
     </Accordion.Toggle>
       <Accordion.Collapse eventKey="0">
