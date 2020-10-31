@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import {GithubPicker}  from 'react-color';
 
 // Continents to filter by
 const continents = ['All', 'Africa', 'Asia', 'South America', 'North America', 'Europe', 'Oceania'];
@@ -21,7 +22,7 @@ class ToolsPanel extends Component {
 
 
     render() {
-      const { lineWidth , onChangelineWidth } = this.props;
+      const { lineWidth , onChangelineWidth, onChangeColor } = this.props;
       return <Card>
       <Card.Header>{this.props.name}</Card.Header>
       <Card.Body>
@@ -36,6 +37,10 @@ class ToolsPanel extends Component {
             <select style={selectStyles} onChange={e => e.currentTarget.value}>
             {options}
          </select>
+          </Form.Group>
+          <Form.Group controlId="formSelect">
+            <Form.Label>Color: </Form.Label>
+            <GithubPicker  onChangeComplete={onChangeColor}/>
           </Form.Group>
         </Form>
       </Card.Body>

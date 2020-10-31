@@ -8,6 +8,7 @@ import DeckGL from '@deck.gl/react';
 export default class DeckMap extends Component {
 
   render() {
+    const { lineWidth , onChangelineWidth, onChangeColor } = this.props;
     const continent = 'All';
     const INITIAL_VIEW_STATE = {
       longitude: 0,
@@ -22,39 +23,56 @@ export default class DeckMap extends Component {
       return continent !== 'All' ? `WHERE pop_est>40000000 and continent='${continent}'` : '';
     }
 
-    const { lineWidth, onChangelineWidth } = this.props;
 
     const layer = new CartoSQLLayer({
       data: `SELECT * FROM public.ne_50m_admin_0_countries ${getContinentCondition(continent)}`,
       pointRadiusMinPixels: 6,
       getLineColor: [0, 77, 90],
-      getFillColor: (object) => {
-        if (object.properties.pop_est < 1000000) {
-          return [0, 50,50];
-        } else if (object.properties.pop_est >= 20000000) {
-          return [0, 255, 255];
-        } else if (object.properties.pop_est >= 4000000) {
-          return [0, 200, 200];
-        } else if (object.properties.pop_est >= 1000000) {
-          return [0, 100, 100];
-        }
-      },
-
-      opacity: 0.5,
+      getFillColor: (object) => get_colour(object,this.props.color),
+      opacity: 0.8,
       lineWidthMinPixels: this.props.lineWidth,
       updateTriggers: {
-        lineWidthMinPixels: this.props.lineWidth
+        lineWidthMinPixels: this.props.lineWidth,
+        getFillColor: (object) => get_colour(object,this.props.color),
       }
-      , getTooltip: ({ object }) => object && `Flight ${object.name}`
     });
 
-    function get_colour(d) {
-      if (d < 1000000) {
-        return [0, 128, 255]
-      } else if (d => 10000000) {
-        return [255, 100, 128]
-      } else if (d => 100000000) {
-        return [128, 128, 128]
+    function LightenDarkenColor(col,amt) {
+      var usePound = false;
+      if ( col[0] == "#" ) {
+          col = col.slice(1);
+          usePound = true;
+      }
+  
+  
+      var r = col[0]  * amt;
+      var g = col[1]  * amt;
+      var b = col[2]  * amt;
+  
+      if ( r > 255 ) r = 255;
+      else if  (r < 0) r = 0;
+  
+
+      if ( b > 255 ) b = 255;
+      else if  (b < 0) b = 0;
+
+      if ( g > 255 ) g = 255;
+      else if  ( g < 0 ) g = 0;
+  
+      //return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
+      return[r,g,b];
+  }
+
+    function get_colour(object,color) {
+      
+      if (object.properties.pop_est < 1000000) {
+        return LightenDarkenColor(color,0);
+      } else if (object.properties.pop_est >= 20000000) {
+        return LightenDarkenColor(color,0.8);
+      } else if (object.properties.pop_est >= 4000000) {
+        return LightenDarkenColor(color,0.4);
+      } else if (object.properties.pop_est >= 1000000) {
+        return LightenDarkenColor(color,0.2);
       }
     }
     return <div>
