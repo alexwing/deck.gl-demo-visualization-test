@@ -1,55 +1,51 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
-import {GithubPicker}  from 'react-color';
-
-// Continents to filter by
-const continents = ['All', 'Africa', 'Asia', 'South America', 'North America', 'Europe', 'Oceania'];
-const options = continents.map(c => (
-  <option key={c} lineWidth={c}>
-    {c}
-  </option>
-));
-// Styles for continent selector
-const selectStyles = {
-  position: 'absolute',
-  zIndex: 1
-};
-
+import { GithubPicker } from 'react-color';
 
 
 class ToolsPanel extends Component {
-
-
-    render() {
-      const { lineWidth , onChangelineWidth, onChangeColor, onChangeColorStroke } = this.props;
-      return <Card>
+  render() {
+    // Continents to filter by
+    const continents = ['All', 'Africa', 'Asia', 'South America', 'North America', 'Europe', 'Oceania'];
+    const options = continents.map(c => (
+      <option key={c} lineWidth={c}>
+        {c}
+      </option>
+    ));
+    // Styles for continent selector
+    const selectStyles = {
+      position: 'absolute',
+      zIndex: 1
+    };
+    const { lineWidth, onChangelineWidth, onChangeColor, onChangeColorStroke } = this.props;
+    return <Card>
       <Card.Header>{this.props.name}</Card.Header>
       <Card.Body>
         <Card.Title>Modify the values to apply the changes to the map .</Card.Title>
         <Form>
-          <Form.Group controlId="formBasicRange">
-            <Form.Label>Stroke Size</Form.Label>
-            <Form.Control type="range" min="0" max="4" value={lineWidth}  onChange={onChangelineWidth}/>
-          </Form.Group>
           <Form.Group controlId="formSelect">
             <Form.Label>Continent: </Form.Label>
-            <select style={selectStyles} onChange={e => e.currentTarget.value}>
-            {options}
-         </select>
+            <Form.Control as="select" onChange={e => e.currentTarget.value}>
+              {options}
+            </Form.Control>
           </Form.Group>
-          <Form.Group controlId="formSelect">
-            <Form.Label>Polygon Color: </Form.Label>
-            <GithubPicker  onChangeComplete={onChangeColor}/>
+          <Form.Group controlId="formBasicRange">
+            <Form.Label>Stroke Size</Form.Label>
+            <Form.Control type="range" min="0" max="4" value={lineWidth} onChange={onChangelineWidth} />
           </Form.Group>
-          <Form.Group controlId="formSelect">
+          <Form.Group controlId="formGithubPicker1">
             <Form.Label>Stroke Color: </Form.Label>
-            <GithubPicker  onChangeComplete={onChangeColorStroke}/>
-          </Form.Group>          
+            <GithubPicker onChangeComplete={onChangeColorStroke} />
+          </Form.Group>
+          <Form.Group controlId="formGithubPicker2">
+            <Form.Label>Polygon Color: </Form.Label>
+            <GithubPicker onChangeComplete={onChangeColor} />
+          </Form.Group>
         </Form>
       </Card.Body>
     </Card>;
-    }
+  }
 
 }
 
