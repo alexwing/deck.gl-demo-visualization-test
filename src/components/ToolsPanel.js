@@ -18,7 +18,7 @@ class ToolsPanel extends Component {
       position: 'absolute',
       zIndex: 1
     };
-    const { lineWidth, onChangelineWidth, onChangeColor, onChangeColorStroke } = this.props;
+    const { lineWidth, continent, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent } = this.props;
     return <Card>
       <Card.Header>{this.props.name}</Card.Header>
       <Card.Body>
@@ -26,7 +26,7 @@ class ToolsPanel extends Component {
         <Form>
           <Form.Group controlId="formSelect">
             <Form.Label>Continent: </Form.Label>
-            <Form.Control as="select" onChange={e => e.currentTarget.value}>
+            <Form.Control as="select" onChange={onChangeContinent} value={continent}>
               {options}
             </Form.Control>
           </Form.Group>

@@ -20,13 +20,12 @@ export default class DeckMap extends Component {
     };
 
     function getContinentCondition(continent) {
-      //return continent !== 'All' ? `WHERE continent='${continent}'` : '';
-      return continent !== 'All' ? `WHERE pop_est>40000000 and continent='${continent}'` : '';
+      return continent !== 'All' ? `WHERE continent='${continent}'` : '';
     }
 
 
     const layer = new CartoSQLLayer({
-      data: `SELECT * FROM public.ne_50m_admin_0_countries ${getContinentCondition(continent)}`,
+      data: `SELECT * FROM public.ne_50m_admin_0_countries ${getContinentCondition(this.props.continent)}`,
       pointRadiusMinPixels: 6,
       getLineColor: (object) => get_colour(object,this.props.colorStroke),
       getFillColor: (object) => get_colour(object,this.props.color),

@@ -17,14 +17,13 @@ class Main extends Component {
   state = {
     lineWidth: 2,
     color: [255, 0, 0],
-    colorStroke: [0, 0, 0]
+    colorStroke: [0, 0, 0],
+    continent: "All"
   }
+  
   onChangelineWidthHandler = (val) => {
     this.setState({ lineWidth: val.target.value })
   }
-
-
-
   onChangeColorHandler = (color, event) => {
     this.setState({ color: hexToRgb(color.hex) });
     
@@ -33,9 +32,9 @@ class Main extends Component {
     this.setState({ colorStroke: hexToRgb(color.hex) });
     
   };
-
-
-  
+  onChangeContinentHandler = (val) => {
+    this.setState({ continent: val.target.value })
+  }
 
   render() {
     return (
@@ -43,6 +42,7 @@ class Main extends Component {
         <DeckMap lineWidth={this.state.lineWidth}
                  color={this.state.color} 
                  colorStroke={this.state.colorStroke} 
+                 continent={this.state.continent} 
         />
         <MenuTop name="@deck.gl/carto Demo" />
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
@@ -52,6 +52,7 @@ class Main extends Component {
                 lineWidth={this.state.lineWidth} onChangelineWidth={this.onChangelineWidthHandler}
                 color={this.state.color} onChangeColor={this.onChangeColorHandler}
                 colorStroke={this.state.colorStroke} onChangeColorStroke={this.onChangeColorStrokeHandler}
+                continent={this.state.continent} onChangeContinent={this.onChangeContinentHandler}
               />
             </Col> 
           </Row>
