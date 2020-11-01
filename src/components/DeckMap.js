@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-import { CartoSQLLayer, setDefaultCredentials } from '@deck.gl/carto';
+import { CartoSQLLayer } from '@deck.gl/carto';
 
 import { StaticMap } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
 import {LightenDarkenColor} from './Utils.js';
+import {GeoJsonLayer} from '@deck.gl/layers';
+
+
+import json from '../db/cartodb-query.json';
 
 
 export default class DeckMap extends Component {
 
   render() {
-    const { lineWidth , onChangelineWidth, onChangeColor } = this.props;
-    const continent = 'All';
     const INITIAL_VIEW_STATE = {
       longitude: 0,
       latitude: 0,
       zoom: 2,
-      //pitch: 50,
+      pitch: 50,
       bearing: 0
     };
 
@@ -23,8 +25,22 @@ export default class DeckMap extends Component {
       return continent !== 'All' ? `WHERE continent='${continent}'` : '';
     }
 
-
-    const layer = new CartoSQLLayer({
+    const layer = new GeoJsonLayer({
+      id: 'geojson-layer',
+      json,
+      pickable: true,
+      stroked: false,
+      filled: true,
+      extruded: true,
+      lineWidthScale: 20,
+      lineWidthMinPixels: 2,
+      getFillColor: [160, 160, 180, 200],
+      getLineColor: [160, 160, 180, 200],
+      getRadius: 100,
+      getLineWidth: 1,
+      getElevation: 30
+    });
+    const layer2 = new CartoSQLLayer({
       data: `SELECT * FROM public.ne_50m_admin_0_countries ${getContinentCondition(this.props.continent)}`,
       pointRadiusMinPixels: 6,
       getLineColor: (object) => get_colour(object,this.props.colorStroke),
@@ -58,7 +74,7 @@ export default class DeckMap extends Component {
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         //   effects= {postProcessEffect}
-        layers={[layer]}
+        layers={[layer2]}
       >
         <StaticMap
           reuseMaps

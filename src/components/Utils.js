@@ -11,10 +11,8 @@ export const hexToRgb = function (hex) {
 
 
   export const LightenDarkenColor = function(col,amt) {
-    var usePound = false;
-    if ( col[0] == "#" ) {
+    if ( col[0] === "#" ) {
         col = col.slice(1);
-        usePound = true;
     }
     var r = col[0]  * amt;
     var g = col[1]  * amt;
@@ -30,6 +28,5 @@ export const hexToRgb = function (hex) {
     if ( g > 255 ) g = 255;
     else if  ( g < 0 ) g = 0;
 
-    //return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
     return[r,g,b];
 }
