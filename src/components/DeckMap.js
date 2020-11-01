@@ -3,58 +3,66 @@ import { CartoSQLLayer } from '@deck.gl/carto';
 
 import { StaticMap } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
-import {LightenDarkenColor} from './Utils.js';
+import {LightenDarkenColor,colorScale} from './Utils.js';
 import {GeoJsonLayer} from '@deck.gl/layers';
 
 
-import json from '../db/cartodb-query.json';
+//import json from '../db/cartodb-query.json';
+import json from '../db/vancouver-blocks.json';
 
 
 export default class DeckMap extends Component {
 
   render() {
+    const {onHoverInfo } = this.props;
     const INITIAL_VIEW_STATE = {
-      longitude: 0,
-      latitude: 0,
-      zoom: 2,
-      pitch: 50,
-      bearing: 0
+      latitude: 49.254,
+      longitude: -123.13,
+      zoom: 11,
+      maxZoom: 16,
+      pitch: 45
     };
 
     function getContinentCondition(continent) {
       return continent !== 'All' ? `WHERE continent='${continent}'` : '';
     }
 
-    const layer = new GeoJsonLayer({
-      id: 'geojson-layer',
-      json,
-      pickable: true,
+ 
+    const layers = [ new GeoJsonLayer({
+      data: json,
+      opacity: 0.8,
       stroked: false,
       filled: true,
       extruded: true,
-      lineWidthScale: 20,
-      lineWidthMinPixels: 2,
-      getFillColor: [160, 160, 180, 200],
-      getLineColor: [160, 160, 180, 200],
-      getRadius: 100,
-      getLineWidth: 1,
-      getElevation: 30
-    });
-    const layer2 = new CartoSQLLayer({
+      wireframe: true,
+      getElevation: f => Math.sqrt(f.properties.valuePerSqm) * 10,
+      getFillColor: f => colorScale(f.properties.growth),
+      getLineColor: [255, 255, 255],
+
+      pickable: true,
+
+
+    }),
+    new CartoSQLLayer({
       data: `SELECT * FROM public.ne_50m_admin_0_countries ${getContinentCondition(this.props.continent)}`,
       pointRadiusMinPixels: 6,
       getLineColor: (object) => get_colour(object,this.props.colorStroke),
       getFillColor: (object) => get_colour(object,this.props.color),
       opacity: 0.8,
+      pickable: true,
       lineWidthMinPixels: this.props.lineWidth,
       updateTriggers: {
         lineWidthMinPixels: this.props.lineWidth,
         getFillColor: (object) => get_colour(object,this.props.color),
         getLineColor: (object) => get_colour(object,this.props.colorStroke),
-      }
-    });
+      },
+      onHover: info => onHoverInfo(info)
+    })
+  
+  ];
 
 
+  
     function get_colour(object,color) {
       
       if (object.properties.pop_est < 1000000) {
@@ -67,6 +75,8 @@ export default class DeckMap extends Component {
         return LightenDarkenColor(color,0.2);
       }
     }
+
+    
     return <div>
       <DeckGL
         width="100%"
@@ -74,8 +84,8 @@ export default class DeckMap extends Component {
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         //   effects= {postProcessEffect}
-        layers={[layer2]}
-      >
+        layers={[layers]}
+      >    
         <StaticMap
           reuseMaps
           mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
