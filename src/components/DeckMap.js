@@ -14,15 +14,7 @@ import json from '../db/vancouver-blocks.json';
 export default class DeckMap extends Component {
 
   render() {
-    const {onHoverInfo } = this.props;
-    const INITIAL_VIEW_STATE = {
-      latitude: 49.254,
-      longitude: -123.13,
-      zoom: 11,
-      maxZoom: 16,
-      pitch: 45
-    };
-
+    const {onHoverInfo,viewState } = this.props;
     function getContinentCondition(continent) {
       return continent !== 'All' ? `WHERE continent='${continent}'` : '';
     }
@@ -81,7 +73,7 @@ export default class DeckMap extends Component {
       <DeckGL
         width="100%"
         height="100%"
-        initialViewState={INITIAL_VIEW_STATE}
+        initialViewState={viewState}
         controller={true}
         //   effects= {postProcessEffect}
         layers={[layers]}

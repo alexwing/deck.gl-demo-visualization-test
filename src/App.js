@@ -12,6 +12,22 @@ import DeckMap from './components/DeckMap';
 
 import { hexToRgb } from './components/Utils.js';
 
+const VIEW_STATES = [
+{
+  longitude: 0,
+  latitude: 0,
+  zoom: 2,
+  //pitch: 50,
+  bearing: 0
+},
+{
+  latitude: 49.254,
+  longitude: -123.13,
+  zoom: 11,
+  maxZoom: 16,
+  pitch: 45
+}
+];
 
 class Main extends Component {
   state = {
@@ -19,7 +35,8 @@ class Main extends Component {
     color: [255, 0, 0],
     colorStroke: [0, 0, 0],
     continent: "All",
-    info: null
+    info: null,
+    viewState:VIEW_STATES[0]
   }
 
   onChangelineWidthHandler = (val) => {
@@ -35,6 +52,15 @@ class Main extends Component {
   };
   onChangeContinentHandler = (val) => {
     this.setState({ continent: val.target.value })
+  }
+  onChangeViewHandler = (val) => {
+
+    if ( this.state.viewState == VIEW_STATES[0]){
+      this.setState({ viewState: VIEW_STATES[1]});      
+    }else{
+      this.setState({ viewState: VIEW_STATES[0]});   
+    }
+    
   }
   onHoverInfoHandler = (info) => {
     if (!info.object) {
@@ -53,6 +79,7 @@ class Main extends Component {
           colorStroke={this.state.colorStroke}
           continent={this.state.continent}
           onHoverInfo={this.onHoverInfoHandler}
+          viewState = {this.state.viewState}
         />
         <MenuTop name="@deck.gl/carto Demo" />
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
@@ -64,6 +91,7 @@ class Main extends Component {
                 colorStroke={this.state.colorStroke} onChangeColorStroke={this.onChangeColorStrokeHandler}
                 continent={this.state.continent} onChangeContinent={this.onChangeContinentHandler}
                 info={this.state.info}
+                onChangeView={this.onChangeViewHandler}
               />
             </Col>
           </Row>

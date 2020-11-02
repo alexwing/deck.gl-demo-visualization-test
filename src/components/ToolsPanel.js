@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
+import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table';
 import { GithubPicker } from 'react-color';
 
@@ -11,19 +12,20 @@ class ToolsPanel extends Component {
     // Continents to filter by
     const continents = ['All', 'Africa', 'Asia', 'South America', 'North America', 'Europe', 'Oceania'];
     const options = continents.map(c => (
-      <option key={c} lineWidth={c}>
+      <option key={c} value={c}>
         {c}
       </option>
     ));
-    const { name, lineWidth, continent, info, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent } = this.props;
+    const { name, lineWidth, continent, info, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent, onChangeView } = this.props;
     return <Accordion defaultActiveKey="0">
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey="0" >
-          {name}
+          {name}     
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body>
             <Form>
+              <Button type="button" onClick={onChangeView}>Change View</Button>
               <Form.Group controlId="formSelect">
                 <Form.Label>Continent: </Form.Label>
                 <Form.Control as="select" onChange={onChangeContinent} value={continent}>
@@ -42,7 +44,8 @@ class ToolsPanel extends Component {
                 <Form.Label>Polygon Color: </Form.Label>
                 <GithubPicker onChangeComplete={onChangeColor} />
               </Form.Group>
-              <Table striped bordered hove size="sm" >
+         
+              <Table striped bordered size="sm" >
                 <thead>
                   <tr>
                     <th>Type</th>
