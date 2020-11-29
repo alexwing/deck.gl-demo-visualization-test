@@ -37,7 +37,6 @@ class Main extends Component {
     continent: "All",
     info: null,
     viewState:VIEW_STATES[0],
-    //continents: ['All', 'Africa', 'Asia', 'South America', 'North America', 'Europe', 'Oceania']
     continents:[],
   }
 
@@ -47,9 +46,11 @@ class Main extends Component {
 
 
   GetContinents() {
+    const sql = "SELECT continent, SUM(pop_est) as population FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC";
+
     const { page } = this.state;
     fetch(
-      'https://public.carto.com/api/v2/sql?q=SELECT%20DISTINCT%20continent%20FROM%20public.ne_50m_admin_0_countries',
+      'https://public.carto.com/api/v2/sql?q='+sql,
       {
         method: "GET",
         headers: new Headers({

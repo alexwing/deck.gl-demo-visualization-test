@@ -21,7 +21,7 @@ class ToolsPanel extends Component {
 
     const legend = continents.map(c => (
       <li key={c.continent}>
-        {c.continent}, {c.continent}
+        {c.continent}, {c !== null ? Intl.NumberFormat().format(c.population) : "NO DATA"}
       </li>
     ));
     
