@@ -9,14 +9,22 @@ import { GithubPicker } from 'react-color';
 
 class ToolsPanel extends Component {
   render() {
-    // Continents to filter by
-    const continents = ['All', 'Africa', 'Asia', 'South America', 'North America', 'Europe', 'Oceania'];
+   const { name, lineWidth, continent, info, continents, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent, onChangeView } = this.props;
+
     const options = continents.map(c => (
-      <option key={c} value={c}>
-        {c}
+      <option key={c.continent} value={c.continent}>
+        {c.continent} 
       </option>
+    )
+
+    );
+
+    const legend = continents.map(c => (
+      <li key={c.continent}>
+        {c.continent}, {c.continent}
+      </li>
     ));
-    const { name, lineWidth, continent, info, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent, onChangeView } = this.props;
+    
     return <Accordion defaultActiveKey="0">
       <Card>
         <Accordion.Toggle as={Card.Header} eventKey="0" >
@@ -29,6 +37,9 @@ class ToolsPanel extends Component {
               <Form.Group controlId="formSelect">
                 <Form.Label>Continent: </Form.Label>
                 <Form.Control as="select" onChange={onChangeContinent} value={continent}>
+                  <option key="ALL" value="ALL">
+                    ALL
+                  </option>                  
                   {options}
                 </Form.Control>
               </Form.Group>
@@ -44,7 +55,9 @@ class ToolsPanel extends Component {
                 <Form.Label>Polygon Color: </Form.Label>
                 <GithubPicker onChangeComplete={onChangeColor} />
               </Form.Group>
-         
+              <ul>
+              {legend}
+              </ul>
               <Table striped bordered size="sm" >
                 <thead>
                   <tr>

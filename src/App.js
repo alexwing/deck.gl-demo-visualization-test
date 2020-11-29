@@ -36,7 +36,32 @@ class Main extends Component {
     colorStroke: [0, 0, 0],
     continent: "All",
     info: null,
-    viewState:VIEW_STATES[0]
+    viewState:VIEW_STATES[0],
+    //continents: ['All', 'Africa', 'Asia', 'South America', 'North America', 'Europe', 'Oceania']
+    continents:[],
+  }
+
+  componentDidMount() {
+    this.GetContinents();
+  }
+
+
+  GetContinents() {
+    const { page } = this.state;
+    fetch(
+      'https://public.carto.com/api/v2/sql?q=SELECT%20DISTINCT%20continent%20FROM%20public.ne_50m_admin_0_countries',
+      {
+        method: "GET",
+        headers: new Headers({
+          Accept: "application/json"
+        })
+      }
+    )
+      .then(res => res.json())
+      .then(response =>
+        this.setState({ continents: response.rows, isLoading: false })
+      )  
+      .catch(error => console.log(error));
   }
 
   onChangelineWidthHandler = (val) => {
@@ -55,12 +80,15 @@ class Main extends Component {
   }
   onChangeViewHandler = (val) => {
 
-    if ( this.state.viewState == VIEW_STATES[0]){
+    if ( this.state.viewState === VIEW_STATES[0]){
       this.setState({ viewState: VIEW_STATES[1]});      
     }else{
       this.setState({ viewState: VIEW_STATES[0]});   
     }
     
+  }
+  onDataLoadedHandler = () => {
+   // console.log(this.state.continents.toString());
   }
   onHoverInfoHandler = (info) => {
     if (!info.object) {
@@ -71,6 +99,7 @@ class Main extends Component {
       this.setState({ info: info.object })
     }
   }
+
   render() {
     return (
       <div>
@@ -80,11 +109,13 @@ class Main extends Component {
           continent={this.state.continent}
           onHoverInfo={this.onHoverInfoHandler}
           viewState = {this.state.viewState}
+          continents={this.state.continents}
+          onDataLoaded = {this.onDataLoadedHandler}
         />
         <MenuTop name="@deck.gl/carto Demo" />
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
           <Row>
-            <Col xs={8} md={3} xl={2}>
+            <Col xs={8} md={4} lg={4} xl={3}>
               <ToolsPanel name="Tools"
                 lineWidth={this.state.lineWidth} onChangelineWidth={this.onChangelineWidthHandler}
                 color={this.state.color} onChangeColor={this.onChangeColorHandler}
@@ -92,6 +123,7 @@ class Main extends Component {
                 continent={this.state.continent} onChangeContinent={this.onChangeContinentHandler}
                 info={this.state.info}
                 onChangeView={this.onChangeViewHandler}
+                continents={this.state.continents}
               />
             </Col>
           </Row>

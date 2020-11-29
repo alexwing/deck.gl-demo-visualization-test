@@ -14,12 +14,10 @@ import json from '../db/vancouver-blocks.json';
 export default class DeckMap extends Component {
 
   render() {
-    const {onHoverInfo,viewState } = this.props;
+    const {onHoverInfo,onDataLoaded,viewState } = this.props;
     function getContinentCondition(continent) {
       return continent !== 'All' ? `WHERE continent='${continent}'` : '';
     }
-
- 
     const layers = [ new GeoJsonLayer({
       data: json,
       opacity: 0.8,
@@ -47,8 +45,11 @@ export default class DeckMap extends Component {
         lineWidthMinPixels: this.props.lineWidth,
         getFillColor: (object) => get_colour(object,this.props.color),
         getLineColor: (object) => get_colour(object,this.props.colorStroke),
+
       },
-      onHover: info => onHoverInfo(info)
+      onHover: info => onHoverInfo(info),
+      onDataLoad: onDataLoaded()
+
     })
   
   ];
@@ -56,7 +57,6 @@ export default class DeckMap extends Component {
 
   
     function get_colour(object,color) {
-      
       if (object.properties.pop_est < 1000000) {
         return LightenDarkenColor(color,0);
       } else if (object.properties.pop_est >= 20000000) {
@@ -68,7 +68,8 @@ export default class DeckMap extends Component {
       }
     }
 
-    
+
+   
     return <div>
       <DeckGL
         width="100%"
