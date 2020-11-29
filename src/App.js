@@ -30,6 +30,7 @@ const VIEW_STATES = [
 ];
 
 class Main extends Component {
+  
   state = {
     lineWidth: 2,
     color: [255, 0, 0],
@@ -38,17 +39,19 @@ class Main extends Component {
     info: null,
     viewState:VIEW_STATES[0],
     continents:[],
+    height:  window.innerHeight
   }
 
   componentDidMount() {
     this.GetContinents();
   }
-
+ componentDidUpdate(){
+   if (this.state.height!==window.innerHeight )
+      this.setState({ height: window.innerHeight })
+ }
 
   GetContinents() {
     const sql = "SELECT continent, SUM(pop_est) as population FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC";
-
-    const { page } = this.state;
     fetch(
       'https://public.carto.com/api/v2/sql?q='+sql,
       {
@@ -125,6 +128,7 @@ class Main extends Component {
                 info={this.state.info}
                 onChangeView={this.onChangeViewHandler}
                 continents={this.state.continents}
+                height={this.state.height}
               />
             </Col>
           </Row>
