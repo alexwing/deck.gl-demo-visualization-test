@@ -22,7 +22,7 @@ class ToolsPanel extends Component {
     );
 
     const legend = continents.map(c => (
-      <tr>
+      <tr  key={c.continent}>
         <td>{c.continent}</td>
         <td align="right">{c !== null ? Intl.NumberFormat().format(c.population) : "NO DATA"}</td>
       </tr>
