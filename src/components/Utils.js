@@ -56,3 +56,18 @@ export const LightenDarkenColor = function (col, amt) {
 
   return [r, g, b];
 }
+
+
+export async function Querydb(sql) {
+  return fetch(
+    'https://public.carto.com/api/v2/sql?q='+sql,
+    {
+      method: "GET",
+      headers: new Headers({
+        Accept: "application/json"
+      })
+    }
+  )
+    .then(res => res.json())
+    .catch(error => console.log(error));
+}

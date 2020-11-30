@@ -10,63 +10,47 @@ import MenuTop from './components/MenuTop';
 import ToolsPanel from './components/ToolsPanel';
 import DeckMap from './components/DeckMap';
 
-import { hexToRgb } from './components/Utils.js';
+import { hexToRgb, Querydb } from './components/Utils.js';
 
 const VIEW_STATES = [
-{
-  longitude: 0,
-  latitude: 0,
-  zoom: 2,
-  //pitch: 50,
-  bearing: 0
-},
-{
-  latitude: 49.254,
-  longitude: -123.13,
-  zoom: 11,
-  maxZoom: 16,
-  pitch: 45
-}
+  {
+    longitude: 0,
+    latitude: 0,
+    zoom: 2,
+    //pitch: 50,
+    bearing: 0
+  },
+  {
+    latitude: 49.254,
+    longitude: -123.13,
+    zoom: 11,
+    maxZoom: 16,
+    pitch: 45
+  }
 ];
 
 class Main extends Component {
-  
+
   state = {
     lineWidth: 2,
     color: [255, 0, 0],
     colorStroke: [0, 0, 0],
     continent: "All",
     info: null,
-    viewState:VIEW_STATES[0],
-    continents:[],
-    height:  window.innerHeight
+    viewState: VIEW_STATES[0],
+    continents: [],
+    height: window.innerHeight
   }
-
   componentDidMount() {
-    this.GetContinents();
-  }
- componentDidUpdate(){
-   if (this.state.height!==window.innerHeight )
-      this.setState({ height: window.innerHeight })
- }
-
-  GetContinents() {
-    const sql = "SELECT continent, SUM(pop_est) as population FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC";
-    fetch(
-      'https://public.carto.com/api/v2/sql?q='+sql,
-      {
-        method: "GET",
-        headers: new Headers({
-          Accept: "application/json"
-        })
-      }
+    Querydb("SELECT continent, SUM(pop_est) as population FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC").then(response =>
+      this.setState({ continents: response.rows, isLoading: false })
     )
-      .then(res => res.json())
-      .then(response =>
-        this.setState({ continents: response.rows, isLoading: false })
-      )  
-      .catch(error => console.log(error));
   }
+  componentDidUpdate() {
+    if (this.state.height !== window.innerHeight)
+      this.setState({ height: window.innerHeight })
+  }
+
 
   onChangelineWidthHandler = (val) => {
     this.setState({ lineWidth: val.target.value })
@@ -84,15 +68,15 @@ class Main extends Component {
   }
   onChangeViewHandler = (val) => {
 
-    if ( this.state.viewState === VIEW_STATES[0]){
-      this.setState({ viewState: VIEW_STATES[1]});      
-    }else{
-      this.setState({ viewState: VIEW_STATES[0]});   
+    if (this.state.viewState === VIEW_STATES[0]) {
+      this.setState({ viewState: VIEW_STATES[1] });
+    } else {
+      this.setState({ viewState: VIEW_STATES[0] });
     }
-    
+
   }
   onDataLoadedHandler = () => {
-   // console.log(this.state.continents.toString());
+    // console.log(this.state.continents.toString());
   }
   onHoverInfoHandler = (info) => {
     if (!info.object) {
@@ -112,9 +96,9 @@ class Main extends Component {
           colorStroke={this.state.colorStroke}
           continent={this.state.continent}
           onHoverInfo={this.onHoverInfoHandler}
-          viewState = {this.state.viewState}
+          viewState={this.state.viewState}
           continents={this.state.continents}
-          onDataLoaded = {this.onDataLoadedHandler}
+          onDataLoaded={this.onDataLoadedHandler}
         />
         <MenuTop name="@deck.gl/carto Demo" />
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
