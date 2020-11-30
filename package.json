@@ -9,6 +9,7 @@
     "bootstrap": "^4.5.3",
     "deck.gl": "^8.3.4",
     "luma.gl": "^7.3.2",
+    "mdbreact": "^5.0.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-color": "^2.19.3",

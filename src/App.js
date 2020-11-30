@@ -33,6 +33,7 @@ class Main extends Component {
 
   state = {
     lineWidth: 2,
+    colorHeight: 14,
     color: [255, 0, 0],
     colorStroke: [0, 0, 0],
     continent: "All",
@@ -42,8 +43,8 @@ class Main extends Component {
     height: window.innerHeight
   }
   componentDidMount() {
-    Querydb("SELECT continent, SUM(pop_est) as population FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC").then(response =>
-      this.setState({ continents: response.rows, isLoading: false })
+    Querydb("SELECT continent, SUM(pop_est) as population, (SUM(pop_est)* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC").then(response =>
+      this.setState({ continents: response.rows})
     )
   }
   componentDidUpdate() {
@@ -63,9 +64,14 @@ class Main extends Component {
     this.setState({ colorStroke: hexToRgb(color.hex) });
 
   };
+  
+  onChangeColorHeightHandler = (val) => {
+    this.setState({ colorHeight: val.target.value })
+  }
   onChangeContinentHandler = (val) => {
     this.setState({ continent: val.target.value })
   }
+  
   onChangeViewHandler = (val) => {
 
     if (this.state.viewState === VIEW_STATES[0]) {
@@ -94,6 +100,7 @@ class Main extends Component {
         <DeckMap lineWidth={this.state.lineWidth}
           color={this.state.color}
           colorStroke={this.state.colorStroke}
+          colorHeight= {this.state.colorHeight}
           continent={this.state.continent}
           onHoverInfo={this.onHoverInfoHandler}
           viewState={this.state.viewState}
@@ -104,10 +111,12 @@ class Main extends Component {
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
           <Row>
             <Col xs={8} md={4} lg={4} xl={3}>
+           
               <ToolsPanel name="Tools"
                 lineWidth={this.state.lineWidth} onChangelineWidth={this.onChangelineWidthHandler}
                 color={this.state.color} onChangeColor={this.onChangeColorHandler}
                 colorStroke={this.state.colorStroke} onChangeColorStroke={this.onChangeColorStrokeHandler}
+                colorHeight={this.state.colorHeight} onChangeColorHeight ={this.onChangeColorHeightHandler}
                 continent={this.state.continent} onChangeContinent={this.onChangeContinentHandler}
                 info={this.state.info}
                 onChangeView={this.onChangeViewHandler}
