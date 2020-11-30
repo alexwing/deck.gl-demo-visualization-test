@@ -45,8 +45,8 @@ class ToolsPanel extends Component {
               <Form.Group controlId="formSelect">
                 <Form.Label>Continent: </Form.Label>
                 <Form.Control as="select" onChange={onChangeContinent} value={continent}>
-                  <option key="ALL" value="ALL">
-                    ALL
+                  <option key="All" value="All">
+                  All
                   </option>
                   {options}
                 </Form.Control>
