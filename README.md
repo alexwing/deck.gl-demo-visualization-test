@@ -14,9 +14,7 @@ In the tool panel, the following modifications can be made on the map:
 * Colour of the polygon (the colour will be darker depending on the population level of the country)
 * Table with country information when you place the mouse over the polygon
 * Legend population and country count by Continent
-
-A GeoJsonLayer has been added with another Json file different from the one you propose in the practice since I am having problems with this one, and I have to see why.
-
+  
 Other features I have yet to explore:
 
 * Try some other ArcLayer, HexagonLayer, GridCellLayer components, etc
