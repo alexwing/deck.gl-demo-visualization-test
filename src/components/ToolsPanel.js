@@ -21,7 +21,7 @@ class ToolsPanel extends Component {
     ));
 
     const Legend = (
-      <Table striped bordered size="sm" >
+      <Table striped bordered hover size="sm" >
         <thead>
           <tr>
             <th style={{ width: "45%" }}>Zone</th>
