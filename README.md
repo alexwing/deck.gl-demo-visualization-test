@@ -21,6 +21,6 @@ Other features I have yet to explore:
 
 * Try some other ArcLayer, HexagonLayer, GridCellLayer components, etc
 * To be able to select the layers to be displayed and to zoom into the scope of each one.
-* Create the widget grouped by continents that indicates the test using CARTO SQL API.
+
 
 Test app in http://deckgl.aaranda.es/
