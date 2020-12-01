@@ -28,24 +28,20 @@ export default class DeckMap extends Component {
       getElevation: f => Math.sqrt(f.properties.valuePerSqm) * 10,
       getFillColor: f => colorScale(f.properties.growth),
       getLineColor: [255, 255, 255],
-
       pickable: true,
-
-
     }),
     new CartoSQLLayer({
       data: `SELECT *, (pop_est* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent FROM public.ne_50m_admin_0_countries ${getContinentCondition(this.props.continent)}`,
       pointRadiusMinPixels: 6,
-      getLineColor: (object) => this.props.colorStroke,
-      getFillColor: (object) => get_colour(object,this.props.color,this.props.colorHeight),
+      getLineColor: this.props.colorStroke,
+      getFillColor: (object) => LightenDarkenColor(this.props.color,(object.properties.percent/ (this.props.colorHeight/10))),
       opacity: 0.8,
       pickable: true,
       lineWidthMinPixels: this.props.lineWidth,
       updateTriggers: {
         lineWidthMinPixels: this.props.lineWidth,
-        getFillColor: (object) => this.props.color,
-        getLineColor: (object) => get_colour(object,this.props.colorStroke,1),
-
+        getLineColor: this.props.colorStroke,
+        getFillColor: (object) => LightenDarkenColor(this.props.color,(object.properties.percent/ (this.props.colorHeight/10)))
       },
       onHover: info => onHoverInfo(info),
       onDataLoad: onDataLoaded()
@@ -53,26 +49,6 @@ export default class DeckMap extends Component {
     })
   
   ];
-
-
-  
-    function get_colour(object,color,colorHeight) {
-
-      return LightenDarkenColor(color,(object.properties.percent/ (colorHeight/10)));
-
-    /*  if (object.properties.pop_est < 1000000) {
-        return LightenDarkenColor(color,0);
-      } else if (object.properties.pop_est >= 20000000) {
-        return LightenDarkenColor(color,0.8);
-      } else if (object.properties.pop_est >= 4000000) {
-        return LightenDarkenColor(color,0.4);
-      } else if (object.properties.pop_est >= 1000000) {
-        return LightenDarkenColor(color,0.2);
-      }*/
-    }
-
-
-   
     return <div>
       <DeckGL
         width="100%"
