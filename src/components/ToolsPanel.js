@@ -33,7 +33,7 @@ class ToolsPanel extends Component {
         </thead>
         <tbody >
           <tr >
-            <td className="table-info" align="left" >{info !== null ? info.properties.name : "NO DATA"}</td>
+            <td className="table-info" align="left" >{info !== null ? info.properties.name : <i style={{color:"gray"}}>Mouse info here</i>}</td>
             <td className="table-info" align="Right" >{info !== null ? 1 : 0}</td>
             <td className="table-info" align="right">{info !== null ? LazyRound(Intl.NumberFormat().format(info.properties.pop_est)) : "0"}</td>
             <td className="table-info" align="right">{info !== null ? Intl.NumberFormat('en-IN', { maximumFractionDigits: 1, minimumFractionDigits: 1, }).format(info.properties.percent) + "%" : "0%"}</td>
