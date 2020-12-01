@@ -57,6 +57,10 @@ export const LightenDarkenColor = function (col, amt) {
   return [r, g, b];
 }
 
+export function LazyRound(num) {
+  var parts = num.split(".");
+  return parts.length > 1 ? (Math.round(parseInt(parts.join(""), 10) / Math.pow(1000, parts.length-1))  + ["T", "M", "B"][parts.length-2]) : parts[0];
+};
 
 export async function Querydb(sql) {
   return fetch(

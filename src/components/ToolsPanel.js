@@ -7,9 +7,12 @@ import Table from 'react-bootstrap/Table';
 import { GithubPicker } from 'react-color';
 import { MDBProgress } from 'mdbreact';
 
+import {LazyRound} from './Utils.js';
+
+
 class ToolsPanel extends Component {
   render() {
-    
+
     const { height, name, lineWidth, colorHeight, continent, info, continents, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent, onChangeView, onChangeColorHeight } = this.props;
     const options = continents.map(c => (
       <option key={c.continent} value={c.continent}>
@@ -22,7 +25,8 @@ class ToolsPanel extends Component {
         <thead>
           <tr>
             <th style={{ width: "45%" }}>Zone</th>
-            <th style={{ width: "25%", textAlign: "Right" }}>Population</th>
+            <th style={{ width: "10%", textAlign: "Right" }}>Count</th>
+            <th style={{ width: "15%", textAlign: "Right" }}>Pop</th>
             <th style={{ width: "15%", textAlign: "Right" }}>Percent</th>
             <th style={{ width: "15%", textAlign: "Center" }}>Chart</th>
           </tr>
@@ -30,7 +34,8 @@ class ToolsPanel extends Component {
         <tbody >
           <tr >
             <td className="table-info" align="left" >{info !== null ? info.properties.name : "NO DATA"}</td>
-            <td className="table-info" align="right">{info !== null ? Intl.NumberFormat().format(info.properties.pop_est) : "0"}</td>
+            <td className="table-info" align="Right" >{info !== null ? 1 : 0}</td>
+            <td className="table-info" align="right">{info !== null ? LazyRound(Intl.NumberFormat().format(info.properties.pop_est)) : "0"}</td>
             <td className="table-info" align="right">{info !== null ? Intl.NumberFormat('en-IN', { maximumFractionDigits: 1, minimumFractionDigits: 1, }).format(info.properties.percent) + "%" : "0%"}</td>
             <td className="table-info" align="right">
               <MDBProgress material value={info !== null ? Math.round(info.properties.percent) : 0} height="20px" color="success" />
@@ -39,7 +44,8 @@ class ToolsPanel extends Component {
           {continents.map(c => (
             <tr key={c.continent}>
               <td>{c.continent}</td>
-              <td align="right">{c !== null ? Intl.NumberFormat().format(c.population) : "NO DATA"}</td>
+              <td align="right">{c !== null ? LazyRound(Intl.NumberFormat().format(c.countries)) : "0"}</td>
+              <td align="right">{c !== null ? LazyRound(Intl.NumberFormat().format(c.population)) : "0"}</td>
               <td align="right">{c !== null ? Intl.NumberFormat('en-IN', { maximumFractionDigits: 1, minimumFractionDigits: 1, }).format(c.percent) + "%" : "NO DATA"}</td>
               <td>
                 <MDBProgress material value={c !== null ? Math.round(c.percent) : 0} height="20px" color="success" />

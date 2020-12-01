@@ -43,7 +43,7 @@ class Main extends Component {
     height: window.innerHeight
   }
   componentDidMount() {
-    Querydb("SELECT continent, SUM(pop_est) as population, (SUM(pop_est)* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC").then(response =>
+    Querydb("SELECT continent, SUM(pop_est) as population, (SUM(pop_est)* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent,  COUNT(*) as Countries FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC").then(response =>
       this.setState({ continents: response.rows})
     )
   }
