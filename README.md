@@ -1,10 +1,6 @@
 # @deck.gl/carto Demo
 
-Test application of Deck.gl using React
-
-The application has been divided into different components of React, communicating with each other.
-
-In the tool panel, the following modifications can be made on the map:
+Test application of Deck.gl using React.The application has been divided into different components of React, communicating with each other. In the tool panel, the following modifications can be made on the map:
 
 * Change view (Show GeoJsonLayer)
 * Select the continent 
