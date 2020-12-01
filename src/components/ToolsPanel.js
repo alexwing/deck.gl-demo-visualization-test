@@ -9,28 +9,46 @@ import { MDBProgress } from 'mdbreact';
 
 class ToolsPanel extends Component {
   render() {
-
+    
     const { height, name, lineWidth, colorHeight, continent, info, continents, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent, onChangeView, onChangeColorHeight } = this.props;
-
-
     const options = continents.map(c => (
       <option key={c.continent} value={c.continent}>
         {c.continent}
       </option>
-    )
-
-    );
-
-    const legend = continents.map(c => (
-      <tr key={c.continent}>
-        <td>{c.continent}</td>
-        <td align="right">{c !== null ? Intl.NumberFormat().format(c.population) : "NO DATA"}</td>
-        <td align="right">{c !== null ? Intl.NumberFormat('en-IN', {  maximumFractionDigits: 1, minimumFractionDigits: 1,  }).format(c.percent) + "%" : "NO DATA"}</td>
-        <td>
-          <MDBProgress material value={c !== null ? Math.round(c.percent) : 0} height="20px" color="success"/>
-        </td>
-      </tr>
     ));
+
+    const Legend = (
+      <Table striped bordered size="sm" >
+        <thead>
+          <tr>
+            <th style={{ width: "45%" }}>Zone</th>
+            <th style={{ width: "25%", textAlign: "Right" }}>Population</th>
+            <th style={{ width: "15%", textAlign: "Right" }}>Percent</th>
+            <th style={{ width: "15%", textAlign: "Center" }}>Chart</th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr >
+            <td className="table-info" align="left" >{info !== null ? info.properties.name : "NO DATA"}</td>
+            <td className="table-info" align="right">{info !== null ? Intl.NumberFormat().format(info.properties.pop_est) : "0"}</td>
+            <td className="table-info" align="right">{info !== null ? Intl.NumberFormat('en-IN', { maximumFractionDigits: 1, minimumFractionDigits: 1, }).format(info.properties.percent) + "%" : "0%"}</td>
+            <td className="table-info" align="right">
+              <MDBProgress material value={info !== null ? Math.round(info.properties.percent) : 0} height="20px" color="success" />
+            </td>
+          </tr>
+          {continents.map(c => (
+            <tr key={c.continent}>
+              <td>{c.continent}</td>
+              <td align="right">{c !== null ? Intl.NumberFormat().format(c.population) : "NO DATA"}</td>
+              <td align="right">{c !== null ? Intl.NumberFormat('en-IN', { maximumFractionDigits: 1, minimumFractionDigits: 1, }).format(c.percent) + "%" : "NO DATA"}</td>
+              <td>
+                <MDBProgress material value={c !== null ? Math.round(c.percent) : 0} height="20px" color="success" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
 
     return <Accordion defaultActiveKey="0">
       <Card>
@@ -40,13 +58,12 @@ class ToolsPanel extends Component {
         <Accordion.Collapse eventKey="0">
           <Card.Body style={{ overflowY: "auto", maxHeight: (height - 140) + "px" }}>
             <Form>
-
               <Button type="button" onClick={onChangeView}>Change View</Button>
               <Form.Group controlId="formSelect">
                 <Form.Label>Continent: </Form.Label>
                 <Form.Control as="select" onChange={onChangeContinent} value={continent}>
                   <option key="All" value="All">
-                  All
+                    All
                   </option>
                   {options}
                 </Form.Control>
@@ -67,27 +84,7 @@ class ToolsPanel extends Component {
                 <Form.Label>Polygon Color: </Form.Label>
                 <GithubPicker onChangeComplete={onChangeColor} />
               </Form.Group>
-              <Table striped bordered size="sm" >
-                <thead>
-                  <tr>
-                    <th style={{ width: "45%" }}>Zone</th>
-                    <th style={{ width: "25%", textAlign: "Right" }}>Population</th>
-                    <th style={{ width: "15%", textAlign: "Right" }}>Percent</th>
-                    <th style={{ width: "15%", textAlign: "Center" }}>Chart</th>
-                  </tr>
-                </thead>
-                <tbody >
-                  <tr >
-                    <td className="table-info" align="left" >{info !== null ? info.properties.name : "NO DATA"}</td>
-                    <td className="table-info" align="right">{info !== null ? Intl.NumberFormat().format(info.properties.pop_est) : "0"}</td>
-                    <td className="table-info" align="right"> {info !== null ? Intl.NumberFormat('en-IN', {  maximumFractionDigits: 1, minimumFractionDigits: 1,  }).format(info.properties.percent) + "%" : "0%"}</td>                    
-                    <td align="right">
-                      <MDBProgress material value={info !== null ? Math.round(info.properties.percent) : 0} height="20px" color="success"/>
-                    </td>
-                  </tr>
-                  {legend}
-                </tbody>
-              </Table>
+              {Legend}
             </Form>
           </Card.Body>
         </Accordion.Collapse>
