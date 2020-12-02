@@ -44,7 +44,7 @@ class Main extends Component {
   }
   componentDidMount() {
     Querydb("SELECT continent, SUM(pop_est) as population, (SUM(pop_est)* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent,  COUNT(*) as Countries FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC").then(response =>
-      this.setState({ continents: response.rows})
+      this.setState({ continents: response.rows })
     )
   }
   componentDidUpdate() {
@@ -64,20 +64,34 @@ class Main extends Component {
     this.setState({ colorStroke: hexToRgb(color.hex) });
 
   };
-  
+
   onChangeColorHeightHandler = (val) => {
     this.setState({ colorHeight: val.target.value })
   }
   onChangeContinentHandler = (val) => {
+    // console.log(val.target.parentNode.id);
     this.setState({ continent: val.target.value })
   }
-  
+
+  onClickContinentHandler = (val) => {
+    //  console.log(val.target.parentNode.id);
+
+    
+    val.target.parentNode.classList.toggle('table-primary');
+    if (!val.target.parentNode.classList.contains('table-primary')) {
+      this.setState({ continent: "All" })
+    } else {
+      this.setState({ continent: val.target.parentNode.id })
+    }
+  }
+
   onChangeViewHandler = (val) => {
 
     if (this.state.viewState === VIEW_STATES[0]) {
-      this.setState({ viewState: VIEW_STATES[1] });
+      this.setState({ viewState: VIEW_STATES[1] , continent: "NONE"});
+      
     } else {
-      this.setState({ viewState: VIEW_STATES[0] });
+      this.setState({ viewState: VIEW_STATES[0] , continent: "All"});
     }
 
   }
@@ -100,7 +114,7 @@ class Main extends Component {
         <DeckMap lineWidth={this.state.lineWidth}
           color={this.state.color}
           colorStroke={this.state.colorStroke}
-          colorHeight= {this.state.colorHeight}
+          colorHeight={this.state.colorHeight}
           continent={this.state.continent}
           onHoverInfo={this.onHoverInfoHandler}
           viewState={this.state.viewState}
@@ -111,13 +125,13 @@ class Main extends Component {
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
           <Row>
             <Col xs={8} md={4} lg={4} xl={3}>
-           
+
               <ToolsPanel name="Tools"
                 lineWidth={this.state.lineWidth} onChangelineWidth={this.onChangelineWidthHandler}
                 color={this.state.color} onChangeColor={this.onChangeColorHandler}
                 colorStroke={this.state.colorStroke} onChangeColorStroke={this.onChangeColorStrokeHandler}
-                colorHeight={this.state.colorHeight} onChangeColorHeight ={this.onChangeColorHeightHandler}
-                continent={this.state.continent} onChangeContinent={this.onChangeContinentHandler}
+                colorHeight={this.state.colorHeight} onChangeColorHeight={this.onChangeColorHeightHandler}
+                continent={this.state.continent} onChangeContinent={this.onChangeContinentHandler} onClickContinent={this.onClickContinentHandler}
                 info={this.state.info}
                 onChangeView={this.onChangeViewHandler}
                 continents={this.state.continents}

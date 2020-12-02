@@ -16,7 +16,7 @@ import { LazyRound } from './Utils.js';
 class ToolsPanel extends Component {
   render() {
 
-    const { height, name, lineWidth, colorHeight, continent, info, continents, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent, onChangeView, onChangeColorHeight } = this.props;
+    const { height, name, lineWidth, colorHeight, continent, info, continents, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent,onClickContinent, onChangeView, onChangeColorHeight } = this.props;
     const options = continents.map(c => (
       <option key={c.continent} value={c.continent}>
         {c.continent}
@@ -47,9 +47,9 @@ class ToolsPanel extends Component {
                 </td>
               </tr>
               {continents.map(c => (
-                <tr key={c.continent}>
+                <tr key={c.continent+c.percent} onClick={onClickContinent} id={c.continent}  className={c.continent === continent ? "table-primary" : ""}>
                   <td>{c.continent}</td>
-                  <td td align="right">{c !== null ? LazyRound(Intl.NumberFormat().format(c.countries)) : "0"}</td>
+                  <td align="right">{c !== null ? LazyRound(Intl.NumberFormat().format(c.countries)) : "0"}</td>
                   <td align="right">{c !== null ? LazyRound(Intl.NumberFormat().format(c.population)) : "0"}</td>
                   <td align="right">{c !== null ? Intl.NumberFormat('en-IN', { maximumFractionDigits: 1, minimumFractionDigits: 1, }).format(c.percent) + "%" : "NO DATA"}</td>
                   <td>
