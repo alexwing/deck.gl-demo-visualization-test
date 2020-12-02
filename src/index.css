@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+table.legend{
+  margin-bottom: -20px !important;
+  border: none !important;
+}
+table.legend td, table.legend th {
+  border: none !important;
+}
+
+.github-picker {
+  box-shadow:none !important;
+  padding: 0px !important;
+  width: auto !important;
+  border: none !important;
+}
+.github-picker > div:first-child, .github-picker > div:nth-child(2){
+  display: none !important;
+}
+
