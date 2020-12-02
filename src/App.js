@@ -69,19 +69,14 @@ class Main extends Component {
     this.setState({ colorHeight: val.target.value })
   }
   onChangeContinentHandler = (val) => {
-    // console.log(val.target.parentNode.id);
     this.setState({ continent: val.target.value })
   }
 
   onClickContinentHandler = (val) => {
-    //  console.log(val.target.parentNode.id);
-
-    
-    val.target.parentNode.classList.toggle('table-primary');
-    if (!val.target.parentNode.classList.contains('table-primary')) {
-      this.setState({ continent: "All" })
-    } else {
+    if (this.state.continent !== val.target.parentNode.id) {
       this.setState({ continent: val.target.parentNode.id })
+    } else {
+      this.setState({ continent: "All" })
     }
   }
 
