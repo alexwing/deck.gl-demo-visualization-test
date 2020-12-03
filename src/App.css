@@ -8,3 +8,6 @@ body{
     float: right; 
     margin-top:-2px
 }
+.accordion, .navbar {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 12px;
+}

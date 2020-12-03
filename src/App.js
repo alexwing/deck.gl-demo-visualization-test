@@ -68,10 +68,6 @@ class Main extends Component {
   onChangeColorHeightHandler = (val) => {
     this.setState({ colorHeight: val.target.value })
   }
-  onChangeContinentHandler = (val) => {
-    this.setState({ continent: val.target.value })
-  }
-
   onClickContinentHandler = (val) => {
     if (this.state.continent !== val.target.parentNode.id) {
       this.setState({ continent: val.target.parentNode.id })
@@ -79,17 +75,19 @@ class Main extends Component {
       this.setState({ continent: "All" })
     }
   }
+  onSelectMapHandler = (val) => {
+    console.log(val.target.id);
 
-  onChangeViewHandler = (val) => {
-
-    if (this.state.viewState === VIEW_STATES[0]) {
-      this.setState({ viewState: VIEW_STATES[1] , continent: "NONE"});
-      
-    } else {
-      this.setState({ viewState: VIEW_STATES[0] , continent: "All"});
+    switch (val.target.id) {
+      case "GsonLayer":
+        this.setState({ viewState: VIEW_STATES[1], continent: "NONE" });
+        break;
+      default:
+        this.setState({ viewState: VIEW_STATES[0], continent: "All" });
+        break;
     }
-
   }
+
   onDataLoadedHandler = () => {
     // console.log(this.state.continents.toString());
   }
@@ -116,7 +114,7 @@ class Main extends Component {
           continents={this.state.continents}
           onDataLoaded={this.onDataLoadedHandler}
         />
-        <MenuTop name="@deck.gl/carto Demo" />
+        <MenuTop name="@deck.gl/carto Demo" onSelectMap={this.onSelectMapHandler} />
         <Container fluid style={{ paddingTop: 15 + 'px' }}>
           <Row>
             <Col xs={8} md={4} lg={4} xl={3}>
@@ -126,9 +124,8 @@ class Main extends Component {
                 color={this.state.color} onChangeColor={this.onChangeColorHandler}
                 colorStroke={this.state.colorStroke} onChangeColorStroke={this.onChangeColorStrokeHandler}
                 colorHeight={this.state.colorHeight} onChangeColorHeight={this.onChangeColorHeightHandler}
-                continent={this.state.continent} onChangeContinent={this.onChangeContinentHandler} onClickContinent={this.onClickContinentHandler}
+                continent={this.state.continent} onClickContinent={this.onClickContinentHandler}
                 info={this.state.info}
-                onChangeView={this.onChangeViewHandler}
                 continents={this.state.continents}
                 height={this.state.height}
               />

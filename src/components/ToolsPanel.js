@@ -4,7 +4,6 @@ import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Accordion from 'react-bootstrap/Accordion';
-import Button from 'react-bootstrap/Button'
 import Table from 'react-bootstrap/Table';
 import { GithubPicker } from 'react-color';
 import { MDBProgress } from 'mdbreact';
@@ -16,12 +15,7 @@ import { LazyRound } from './Utils.js';
 class ToolsPanel extends Component {
   render() {
 
-    const { height, name, lineWidth, colorHeight, continent, info, continents, onChangelineWidth, onChangeColor, onChangeColorStroke, onChangeContinent,onClickContinent, onChangeView, onChangeColorHeight } = this.props;
-    const options = continents.map(c => (
-      <option key={c.continent} value={c.continent}>
-        {c.continent}
-      </option>
-    ));
+    const { height, name, lineWidth, colorHeight, continent, info, continents, onChangelineWidth, onChangeColor, onChangeColorStroke,onClickContinent, onChangeColorHeight } = this.props;
 
     const Legend = (
       <Row style={{ marginLeft: "-20px", marginRight: "-20px" }}>
@@ -70,24 +64,7 @@ class ToolsPanel extends Component {
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body style={{ overflowY: "auto", maxHeight: (height - 140) + "px" }}>
-            <Form>
-              <Row>
-                <Col lg={12} xl={4}>
-                  <Form.Label>View: </Form.Label>
-                  <Button type="button" onClick={onChangeView} style={{ width: "100%" }}>Change</Button>
-                </Col>
-                <Col lg={12} xl={8}>
-                  <Form.Group controlId="formSelect">
-                    <Form.Label>Continent: </Form.Label>
-                    <Form.Control as="select" onChange={onChangeContinent} value={continent}>
-                      <option key="All" value="All">
-                        All
-                      </option>
-                      {options}
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
+            <Form>            
               <Row>
                 <Col xs={12} lg={6} >
                   <Form.Group controlId="formBasicRange">
