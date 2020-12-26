@@ -17,4 +17,4 @@ Other features I have yet to explore:
 * To be able to select the layers to be displayed and to zoom into the scope of each one.
 
 
-Test app in http://deckgl.aaranda.es/
+Test app in http://aaranda.es/static/deckgl/
