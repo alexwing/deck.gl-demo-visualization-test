@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StaticMap } from "react-map-gl";
 import { DataFilterExtension } from "@deck.gl/extensions";
 import DeckGL from "@deck.gl/react";
-import { LightenDarkenColor, colorScale } from "./Utils.js";
+import { LightenDarkenColor, colorScale,hashString } from "./Utils";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
 import mapVancouver from "../db/vancouver-blocks.geojson";
@@ -14,6 +14,7 @@ const DeckMap = ({
   colorStroke,
   color,
   colorHeight,
+  continent,
   lineWidth,
 }) => {
 
@@ -43,8 +44,8 @@ const DeckMap = ({
     pointRadiusMinPixels: 6,
     getLineColor: colorStroke,
     extensions: [new DataFilterExtension({ filterSize: 1 })],
-    getFilterValue: (f) => f.properties.name.length,
-    filterRange: [3, colorHeight * 3],
+    getFilterValue: (f) => hashString(continent === "All" ? "All" : f.properties.continent),
+    filterRange:  [hashString(continent), hashString(continent)],
     getFillColor: (object) =>
       LightenDarkenColor(
         color,
@@ -61,8 +62,11 @@ const DeckMap = ({
           color,
           regionLength(object.properties) / (colorHeight / 10)
         ),
+      getFilterValue: (f) => hashString(continent === "All" ? "All" : f.properties.continent),
     },
     onClick: (info) => {
+      console.log(hashString(info.object.properties.continent), hashString(continent));
+      console.log(info.object.properties.continent, continent);
       alert(info.object.properties.name);
     },
     onHover: (info) => {

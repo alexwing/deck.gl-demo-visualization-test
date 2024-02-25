@@ -10,7 +10,7 @@ import MenuTop from "./components/MenuTop";
 import ToolsPanel from "./components/ToolsPanel";
 import DeckMap from "./components/DeckMap";
 
-import { hexToRgb } from "./components/Utils.js";
+import { hexToRgb } from "./components/Utils";
 import infoData from "./db/info.json";
 
 const VIEW_STATES = [
@@ -36,7 +36,7 @@ const Main = () => {
   const [color, setColor] = useState([255, 0, 0]);
   const [colorStroke, setColorStroke] = useState([0, 0, 0]);
   const [info, setInfo] = useState(null);
-  const [continents, setContinents] = useState([]);
+  const [continents, setContinents] = useState(infoData);
   const [continent, setContinent] = useState("All");
   const [viewState, setViewState] = useState(VIEW_STATES[0]);
 
@@ -44,18 +44,16 @@ const Main = () => {
     setContinents(infoData);
   }, []);
 
-
-
   const onChangelineWidthHandler = (val) => {
     setLineWidth(val.target.value);
   };
 
   const onChangeColorHandler = (color, event) => {
-    setColor(hexToRgb(color.hex));
+    setColor(hexToRgb(color.hex) as any);
   };
 
   const onChangeColorStrokeHandler = (color, event) => {
-    setColorStroke(hexToRgb(color.hex));
+    setColorStroke(hexToRgb(color.hex) as any);
   };
 
   const onChangeColorHeightHandler = (val) => {
@@ -76,7 +74,7 @@ const Main = () => {
     switch (val.target.id) {
       case "GsonLayer":
         setViewState(VIEW_STATES[1]);
-        setContinent("NONE");
+        setContinent("All");
         break;
       default:
         setViewState(VIEW_STATES[0]);
@@ -103,7 +101,6 @@ const Main = () => {
         continent={continent}
         onHoverInfo={onHoverInfoHandler}
         viewState={viewState}
-        continents={continents}
       />
       <MenuTop name="@deck.gl - DEMO" onSelectMap={onSelectMapHandler} />
       <Container fluid style={{ paddingTop: 15 + "px" }}>

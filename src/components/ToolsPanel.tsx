@@ -8,7 +8,7 @@ import Table from 'react-bootstrap/Table';
 import { GithubPicker } from 'react-color';
 import { MDBProgress } from 'mdbreact';
 
-import { LazyRound } from './Utils.js';
+import { LazyRound } from './Utils';
 
 const ToolsPanel = (props) => {
   const {
@@ -33,10 +33,10 @@ const ToolsPanel = (props) => {
           <thead>
             <tr>
               <th style={{ width: "45%" }}>Zone</th>
-              <th style={{ width: "10%", textAlign: "Right" }}>Count</th>
-              <th style={{ width: "15%", textAlign: "Right" }}>Pop</th>
-              <th style={{ width: "15%", textAlign: "Right" }}>Percent</th>
-              <th style={{ width: "15%", textAlign: "Center" }}>Chart</th>
+              <th style={{ width: "10%", textAlign: "right" }}>Count</th>
+              <th style={{ width: "15%", textAlign: "right" }}>Pop</th>
+              <th style={{ width: "15%", textAlign: "right" }}>Percent</th>
+              <th style={{ width: "15%", textAlign: "center" }}>Chart</th>
             </tr>
           </thead>
           <tbody>
@@ -48,7 +48,7 @@ const ToolsPanel = (props) => {
                   <i style={{ color: "gray" }}>Mouse info here</i>
                 )}
               </td>
-              <td className="table-info" align="Right">
+              <td className="table-info" align="right">
                 {info !== null ? 1 : 0}
               </td>
               <td className="table-info" align="right">
