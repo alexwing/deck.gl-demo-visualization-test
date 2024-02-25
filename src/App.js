@@ -92,12 +92,13 @@ class Main extends Component {
     // console.log(this.state.continents.toString());
   }
   onHoverInfoHandler = (info) => {
-    if (!info.object) {
+    console.log(" info: ", info);
+    if (!info.name) {
       this.setState({ info: null })
       return;
     }
     else {
-      this.setState({ info: info.object })
+      this.setState({ info: info.name })
     }
   }
 
