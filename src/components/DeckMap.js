@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { StaticMap } from "react-map-gl";
+import { DataFilterExtension } from "@deck.gl/extensions";
 import DeckGL from "@deck.gl/react";
 import { LightenDarkenColor, colorScale } from "./Utils.js";
 import { GeoJsonLayer } from "@deck.gl/layers";
 import json from "../db/vancouver-blocks.json";
-import jsonWorld from "../db/world_borders.geojson";
+import jsonWorld from "../db/world-population.geojson";
 
-const DeckMap = ({ onHoverInfo, onDataLoaded, viewState, colorStroke, color, colorHeight, lineWidth }) => {
-  const getContinentCondition = (continent) => {
-    return continent !== "All" ? `WHERE continent='${continent}'` : "";
+const DeckMap = ({
+  onHoverInfo,
+  viewState,
+  colorStroke,
+  color,
+  colorHeight,
+  lineWidth,
+}) => {
+
+  const regionLength = (properties) => {
+    //string length
+    if (!properties.name) {
+      return 0;
+    }
+    //console.log(properties);
+    return (1 / properties.name.length) * 10;
   };
 
   const layers = [
@@ -22,7 +36,7 @@ const DeckMap = ({ onHoverInfo, onDataLoaded, viewState, colorStroke, color, col
       wireframe: true,
       getElevation: (f) => Math.sqrt(f.properties.valuePerSqm) * 10,
       getFillColor: (f) => colorScale(f.properties.growth),
-      getLineColor: [255, 255, 255],
+      //hide by property name length == 10
       pickable: true,
     }),
     new GeoJsonLayer({
@@ -30,10 +44,13 @@ const DeckMap = ({ onHoverInfo, onDataLoaded, viewState, colorStroke, color, col
       data: jsonWorld,
       pointRadiusMinPixels: 6,
       getLineColor: colorStroke,
+      extensions: [new DataFilterExtension({filterSize: 1})],
+      getFilterValue: f => f.properties.name.length,
+      filterRange: [3, colorHeight *3],
       getFillColor: (object) =>
         LightenDarkenColor(
           color,
-          object.properties.mapcolor / (colorHeight / 10)
+          regionLength(object.properties) / (colorHeight / 10)
         ),
       opacity: 1,
       pickable: true,
@@ -44,11 +61,15 @@ const DeckMap = ({ onHoverInfo, onDataLoaded, viewState, colorStroke, color, col
         getFillColor: (object) =>
           LightenDarkenColor(
             color,
-            object.properties.mapcolor / (colorHeight / 10)
+            regionLength(object.properties) / (colorHeight / 10)
           ),
       },
-      onHoverInfo: onHoverInfo,
-      onDataLoaded: onDataLoaded,
+      onClick: (info) => {
+        alert(info.object.properties.name);
+      },
+      onHover: (info) => {
+        onHoverInfo(info);
+      },
     }),
   ];
 

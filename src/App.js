@@ -1,16 +1,16 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 import React, { useState, useEffect } from "react";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container";
 
-import MenuTop from './components/MenuTop';
-import ToolsPanel from './components/ToolsPanel';
-import DeckMap from './components/DeckMap';
+import MenuTop from "./components/MenuTop";
+import ToolsPanel from "./components/ToolsPanel";
+import DeckMap from "./components/DeckMap";
 
-import { hexToRgb, Querydb } from './components/Utils.js';
+import { hexToRgb } from "./components/Utils.js";
 
 const VIEW_STATES = [
   {
@@ -18,125 +18,166 @@ const VIEW_STATES = [
     latitude: 0,
     zoom: 2,
     //pitch: 50,
-    bearing: 0
+    bearing: 0,
   },
   {
     latitude: 49.254,
     longitude: -123.13,
     zoom: 11,
     maxZoom: 16,
-    pitch: 45
-  }
+    pitch: 45,
+  },
 ];
 
 const Main = () => {
-  const [state, setState] = useState({
-    lineWidth: 2,
-    colorHeight: 14,
-    color: [255, 0, 0],
-    colorStroke: [0, 0, 0],
-    continent: "All",
-    info: null,
-    viewState: VIEW_STATES[0],
-    continents: [],
-    height: window.innerHeight
-  });
+  const [lineWidth, setLineWidth] = useState(2);
+  const [colorHeight, setColorHeight] = useState(14);
+  const [color, setColor] = useState([255, 0, 0]);
+  const [colorStroke, setColorStroke] = useState([0, 0, 0]);
+  const [height, setHeight] = useState(window.innerHeight);
+  const [info, setInfo] = useState(null);
+  const [continents, setContinents] = useState([]);
+  const [continent, setContinent] = useState("All");
+  const [viewState, setViewState] = useState(VIEW_STATES[0]);
 
   useEffect(() => {
-    Querydb("SELECT continent, SUM(pop_est) as population, (SUM(pop_est)* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent,  COUNT(*) as Countries FROM public.ne_50m_admin_0_countries GROUP BY continent ORDER BY SUM(pop_est) DESC").then(response =>
-      setState(prevState => ({ ...prevState, continents: response.rows }))
-    )
+    const continentData = [
+      {
+        continent: "Asia",
+        population: 4098867140,
+        percent: 60.32747856761938,
+        countries: 53,
+      },
+      {
+        continent: "Africa",
+        population: 994676469,
+        percent: 14.639733691224942,
+        countries: 54,
+      },
+      {
+        continent: "Europe",
+        population: 729031916,
+        percent: 10.729954347239588,
+        countries: 50,
+      },
+      {
+        continent: "North America",
+        population: 540816656,
+        percent: 7.959785987074366,
+        countries: 38,
+      },
+      {
+        continent: "South America",
+        population: 394355478,
+        percent: 5.804157791527806,
+        countries: 13,
+      },
+      {
+        continent: "Oceania",
+        population: 34830526,
+        percent: 0.5126386728319059,
+        countries: 24,
+      },
+      {
+        continent: "Antarctica",
+        population: 3802,
+        percent: 0.00005595816250684546,
+        countries: 1,
+      },
+    ];
+    setContinents(continentData);
   }, []);
 
   useEffect(() => {
-    if (state.height !== window.innerHeight)
-      setState(prevState => ({ ...prevState, height: window.innerHeight }))
-  }, [state.height]);
+    if (height !== window.innerHeight) {
+      setHeight(window.innerHeight);
+    }
+  }, [height]);
 
   const onChangelineWidthHandler = (val) => {
-    setState(prevState => ({ ...prevState, lineWidth: val.target.value }));
-  }
+    setLineWidth(val.target.value);
+  };
 
   const onChangeColorHandler = (color, event) => {
-    setState(prevState => ({ ...prevState, color: hexToRgb(color.hex) }));
+    setColor(hexToRgb(color.hex));
   };
 
   const onChangeColorStrokeHandler = (color, event) => {
-    setState(prevState => ({ ...prevState, colorStroke: hexToRgb(color.hex) }));
+    setColorStroke(hexToRgb(color.hex));
   };
 
   const onChangeColorHeightHandler = (val) => {
-    setState(prevState => ({ ...prevState, colorHeight: val.target.value }));
-  }
+    setColorHeight(val.target.value);
+  };
 
   const onClickContinentHandler = (val) => {
-    if (state.continent !== val.target.parentNode.id) {
-      setState(prevState => ({ ...prevState, continent: val.target.parentNode.id }));
+    if (continent !== val.target.parentNode.id) {
+      setContinent(val.target.parentNode.id);
     } else {
-      setState(prevState => ({ ...prevState, continent: "All" }));
+      setContinent("All");
     }
-  }
+  };
 
   const onSelectMapHandler = (val) => {
     console.log(val.target.id);
 
     switch (val.target.id) {
       case "GsonLayer":
-        setState(prevState => ({ ...prevState, viewState: VIEW_STATES[1], continent: "NONE" }));
+        setViewState(VIEW_STATES[1]);
+        setContinent("NONE");
         break;
       default:
-        setState(prevState => ({ ...prevState, viewState: VIEW_STATES[0], continent: "All" }));
+        setViewState(VIEW_STATES[0]);
+        setContinent("All");
         break;
     }
-  }
+  };
 
-  const onDataLoadedHandler = () => {
-    console.log(state.continents.toString());
-  }
-
-  const onHoverInfoHandler = (info) => {
-    console.log(" info: ", info);
-    if (!info.name) {
-      setState(prevState => ({ ...prevState, info: null }));
-      return;
+  const onHoverInfoHandler = (infoValue) => {
+    if (!infoValue.object) {
+      setInfo(null);
+    } else {
+      setInfo(infoValue.object);
     }
-    else {
-      setState(prevState => ({ ...prevState, info: info.name }));
-    }
-  }
+  };
 
   return (
     <div>
-      <DeckMap lineWidth={state.lineWidth}
-        color={state.color}
-        colorStroke={state.colorStroke}
-        colorHeight={state.colorHeight}
-        continent={state.continent}
+      <DeckMap
+        lineWidth={lineWidth}
+        color={color}
+        colorStroke={colorStroke}
+        colorHeight={colorHeight}
+        continent={continent}
         onHoverInfo={onHoverInfoHandler}
-        viewState={state.viewState}
-        continents={state.continents}
-        onDataLoaded={onDataLoadedHandler}
+        viewState={viewState}
+        continents={continents}
       />
-      <MenuTop name="@deck.gl/carto Demo" onSelectMap={onSelectMapHandler} />
-      <Container fluid style={{ paddingTop: 15 + 'px' }}>
+      <MenuTop name="@deck.gl - DEMO" onSelectMap={onSelectMapHandler} />
+      <Container fluid style={{ paddingTop: 15 + "px" }}>
         <Row>
           <Col xs={8} md={4} lg={4} xl={3}>
-
-            <ToolsPanel name="Tools"
-              lineWidth={state.lineWidth} onChangelineWidth={onChangelineWidthHandler}
-              color={state.color} onChangeColor={onChangeColorHandler}
-              colorStroke={state.colorStroke} onChangeColorStroke={onChangeColorStrokeHandler}
-              colorHeight={state.colorHeight} onChangeColorHeight={onChangeColorHeightHandler}
-              continent={state.continent} onClickContinent={onClickContinentHandler}
-              info={state.info}
-              continents={state.continents}
-              height={state.height}
+            <ToolsPanel
+              name="Tools"
+              lineWidth={lineWidth}
+              onChangelineWidth={onChangelineWidthHandler}
+              color={color}
+              onChangeColor={onChangeColorHandler}
+              colorStroke={colorStroke}
+              onChangeColorStroke={onChangeColorStrokeHandler}
+              colorHeight={colorHeight}
+              onChangeColorHeight={onChangeColorHeightHandler}
+              continent={continent}
+              onClickContinent={onClickContinentHandler}
+              info={info}
+              continents={continents}
+              height={height}
             />
           </Col>
         </Row>
       </Container>
     </div>
   );
-}
+};
 
 export default Main;

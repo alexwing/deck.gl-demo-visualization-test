@@ -147,7 +147,7 @@ const ToolsPanel = (props) => {
                     <Form.Control
                       type="range"
                       min="0"
-                      max="100"
+                      max="50"
                       value={colorHeight}
                       onChange={onChangeColorHeight}
                     />
