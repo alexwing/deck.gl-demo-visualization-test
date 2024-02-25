@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CartoSQLLayer } from '@deck.gl/carto';
+// import { CartoLayer } from '@deck.gl/carto';
 
 import { StaticMap } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
@@ -9,7 +9,8 @@ import {GeoJsonLayer} from '@deck.gl/layers';
 
 //import json from '../db/cartodb-query.json';
 import json from '../db/vancouver-blocks.json';
-
+// world_borders.geojs
+import jsonWorld from '../db/world_borders.geojson';
 
 export default class DeckMap extends Component {
 
@@ -30,7 +31,27 @@ export default class DeckMap extends Component {
       getLineColor: [255, 255, 255],
       pickable: true,
     }),
-    new CartoSQLLayer({
+    new GeoJsonLayer(
+    {
+      data: jsonWorld,
+      pointRadiusMinPixels: 6,
+      getLineColor: this.props.colorStroke,
+      getFillColor: (object) => LightenDarkenColor(this.props.color,(object.properties.mapcolor/ (this.props.colorHeight/10))),
+      opacity: 1,
+      pickable: true,
+      lineWidthMinPixels: this.props.lineWidth,
+      updateTriggers: {
+        lineWidthMinPixels: this.props.lineWidth,
+        getLineColor: this.props.colorStroke,
+        getFillColor: (object) => LightenDarkenColor(this.props.color,(object.properties.mapcolor/ (this.props.colorHeight/10)))
+      },
+      //onClick: (info: PieceEvent) => onClickMap(info),
+      // onHover: (info: PieceEvent) => onHoverMap(info),
+    }
+  )
+    
+   /* new CartoLayer({
+      id: 'countries',
       data: `SELECT *, (pop_est* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent FROM public.ne_50m_admin_0_countries ${getContinentCondition(this.props.continent)}`,
       pointRadiusMinPixels: 6,
       getLineColor: this.props.colorStroke,
@@ -46,7 +67,7 @@ export default class DeckMap extends Component {
       onHover: info => onHoverInfo(info),
       onDataLoad: onDataLoaded()
 
-    })
+    })*/
   
   ];
     return <div>
