@@ -11,6 +11,7 @@ import ToolsPanel from "./components/ToolsPanel";
 import DeckMap from "./components/DeckMap";
 
 import { hexToRgb } from "./components/Utils.js";
+import infoData from "./db/info.json";
 
 const VIEW_STATES = [
   {
@@ -34,65 +35,16 @@ const Main = () => {
   const [colorHeight, setColorHeight] = useState(14);
   const [color, setColor] = useState([255, 0, 0]);
   const [colorStroke, setColorStroke] = useState([0, 0, 0]);
-  const [height, setHeight] = useState(window.innerHeight);
   const [info, setInfo] = useState(null);
   const [continents, setContinents] = useState([]);
   const [continent, setContinent] = useState("All");
   const [viewState, setViewState] = useState(VIEW_STATES[0]);
 
   useEffect(() => {
-    const continentData = [
-      {
-        continent: "Asia",
-        population: 4098867140,
-        percent: 60.32747856761938,
-        countries: 53,
-      },
-      {
-        continent: "Africa",
-        population: 994676469,
-        percent: 14.639733691224942,
-        countries: 54,
-      },
-      {
-        continent: "Europe",
-        population: 729031916,
-        percent: 10.729954347239588,
-        countries: 50,
-      },
-      {
-        continent: "North America",
-        population: 540816656,
-        percent: 7.959785987074366,
-        countries: 38,
-      },
-      {
-        continent: "South America",
-        population: 394355478,
-        percent: 5.804157791527806,
-        countries: 13,
-      },
-      {
-        continent: "Oceania",
-        population: 34830526,
-        percent: 0.5126386728319059,
-        countries: 24,
-      },
-      {
-        continent: "Antarctica",
-        population: 3802,
-        percent: 0.00005595816250684546,
-        countries: 1,
-      },
-    ];
-    setContinents(continentData);
+    setContinents(infoData);
   }, []);
 
-  useEffect(() => {
-    if (height !== window.innerHeight) {
-      setHeight(window.innerHeight);
-    }
-  }, [height]);
+
 
   const onChangelineWidthHandler = (val) => {
     setLineWidth(val.target.value);
@@ -171,7 +123,6 @@ const Main = () => {
               onClickContinent={onClickContinentHandler}
               info={info}
               continents={continents}
-              height={height}
             />
           </Col>
         </Row>
