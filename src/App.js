@@ -91,7 +91,7 @@ const Main = () => {
   }
 
   const onDataLoadedHandler = () => {
-    // console.log(state.continents.toString());
+    console.log(state.continents.toString());
   }
 
   const onHoverInfoHandler = (info) => {

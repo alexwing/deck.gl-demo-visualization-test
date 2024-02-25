@@ -48,6 +48,7 @@ const DeckMap = ({ onHoverInfo, onDataLoaded, viewState, colorStroke, color, col
           ),
       },
       onHoverInfo: onHoverInfo,
+      onDataLoaded: onDataLoaded,
     }),
   ];
 
