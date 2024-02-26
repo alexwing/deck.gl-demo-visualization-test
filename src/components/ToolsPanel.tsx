@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
-import Accordion from 'react-bootstrap/Accordion';
-import Table from 'react-bootstrap/Table';
-import { GithubPicker } from 'react-color';
-import { MDBProgress } from 'mdbreact';
+import React, { useEffect, useState } from "react";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Form from "react-bootstrap/Form";
+import Card from "react-bootstrap/Card";
+import Accordion from "react-bootstrap/Accordion";
+import Table from "react-bootstrap/Table";
+import { GithubPicker } from "react-color";
+import { MDBProgress } from "mdbreact";
 
-import { LazyRound } from './Utils';
+import { LazyRound } from "./Utils";
 
 const ToolsPanel = (props) => {
   const {
@@ -29,7 +29,6 @@ const ToolsPanel = (props) => {
 
   const [totalPopulation, setTotalPopulation] = useState(0);
 
-
   useEffect(() => {
     if (continents.length > 0) {
       const total = continents.reduce((acc, c) => acc + c.population, 0);
@@ -42,11 +41,11 @@ const ToolsPanel = (props) => {
       return 0;
     }
     return (pop / totalPopulation) * 100;
-  }
+  };
 
   const Legend = (
     <Row style={{ marginLeft: "-20px", marginRight: "-20px" }}>
-      <Col lg={12} className='tablePop'>
+      <Col lg={12} className="tablePop">
         <Table striped bordered hover size="sm" className="legend">
           <thead>
             <tr>
@@ -58,43 +57,6 @@ const ToolsPanel = (props) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="table-info" align="left">
-                {info !== null ? (
-                  info.properties.name
-                ) : (
-                  <i style={{ color: "gray" }}>info here</i>
-                )}
-              </td>
-              <td className="table-info" align="right">
-                {info !== null ? 1 : 0}
-              </td>
-              <td className="table-info" align="right">
-                {info !== null
-                  ? LazyRound(
-                      Intl.NumberFormat().format(info.properties.pop_est)
-                    )
-                  : "0"}
-              </td>
-              <td className="table-info" align="right">
-                {info !== null
-                  ? Intl.NumberFormat("en-IN", {
-                      maximumFractionDigits: 1,
-                      minimumFractionDigits: 1,
-                    }).format(calcPercent(info.properties.pop_est)) + "%"
-                  : "0%"}
-              </td>
-              <td className="table-info" align="right">
-                <MDBProgress
-                  material
-                  value={
-                    info !== null ? Math.round(calcPercent(info.properties.pop_est)) : 0
-                  }
-                  height="20px"
-                  color="success"
-                />
-              </td>
-            </tr>
             {continents.map((c) => (
               <tr
                 key={c.continent + c.percent}
@@ -131,6 +93,45 @@ const ToolsPanel = (props) => {
                 </td>
               </tr>
             ))}
+            <tr>
+              <td className="table-info" align="left">
+                {info !== null ? (
+                  info.properties.name
+                ) : (
+                  <i style={{ color: "gray" }}>info here</i>
+                )}
+              </td>
+              <td className="table-info" align="right">
+                {info !== null ? 1 : 0}
+              </td>
+              <td className="table-info" align="right">
+                {info !== null
+                  ? LazyRound(
+                      Intl.NumberFormat().format(info.properties.pop_est)
+                    )
+                  : "0"}
+              </td>
+              <td className="table-info" align="right">
+                {info !== null
+                  ? Intl.NumberFormat("en-IN", {
+                      maximumFractionDigits: 1,
+                      minimumFractionDigits: 1,
+                    }).format(calcPercent(info.properties.pop_est)) + "%"
+                  : "0%"}
+              </td>
+              <td className="table-info" align="right">
+                <MDBProgress
+                  material
+                  value={
+                    info !== null
+                      ? Math.round(calcPercent(info.properties.pop_est))
+                      : 0
+                  }
+                  height="20px"
+                  color="success"
+                />
+              </td>
+            </tr>
           </tbody>
         </Table>
       </Col>
@@ -149,7 +150,10 @@ const ToolsPanel = (props) => {
               <Row>
                 <Col xs={12} lg={12}>
                   <Form.Group controlId="formBasicRange3">
-                    <Form.Label>Population Limit: {Intl.NumberFormat().format(populationLimit)}</Form.Label>
+                    <Form.Label>
+                      Population Limit:{" "}
+                      {Intl.NumberFormat().format(populationLimit)}
+                    </Form.Label>
                     <Form.Control
                       type="range"
                       min="0"
@@ -157,7 +161,6 @@ const ToolsPanel = (props) => {
                       value={populationLimit}
                       onChange={onChangePopulationLimit}
                     />
-                    
                   </Form.Group>
                 </Col>
               </Row>
