@@ -12,7 +12,6 @@ import { LazyRound } from './Utils';
 
 const ToolsPanel = (props) => {
   const {
-    height,
     name,
     lineWidth,
     colorHeight,

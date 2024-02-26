@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { StaticMap } from "react-map-gl";
 import { DataFilterExtension } from "@deck.gl/extensions";
 import DeckGL from "@deck.gl/react";

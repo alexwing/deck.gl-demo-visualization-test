@@ -11,8 +11,8 @@ const MenuTop = ({ name, onSelectMap }) => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <NavDropdown title="Map Mode" id="basic-nav-dropdown">
-            <NavDropdown.Item id="Population" href="#Population" onClick={onSelectMap} >Population</NavDropdown.Item>
-            <NavDropdown.Item id="GsonLayer" href="#GsonLayer" onClick={onSelectMap}>GsonLayer</NavDropdown.Item>      
+            <NavDropdown.Item id="Population" href="#Population" onClick={onSelectMap} >World Population</NavDropdown.Item>
+            <NavDropdown.Item id="GsonLayer" href="#GsonLayer" onClick={onSelectMap}>City Buildings</NavDropdown.Item>      
           </NavDropdown>          
         </Nav>
       </Navbar.Collapse>
