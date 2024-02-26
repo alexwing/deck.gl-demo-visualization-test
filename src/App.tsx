@@ -39,7 +39,9 @@ const Main = () => {
   const [continents, setContinents] = useState(infoData);
   const [continent, setContinent] = useState("All");
   const [viewState, setViewState] = useState(VIEW_STATES[0]);
-
+  //const [populationLimit, setPopulationLimit] = useState(continents.reduce((acc, c) => acc + c.population, 0));
+  const [populationLimit, setPopulationLimit] = useState(2000000000);
+  
   useEffect(() => {
     setContinents(infoData);
   }, []);
@@ -69,8 +71,6 @@ const Main = () => {
   };
 
   const onSelectMapHandler = (val) => {
-    console.log(val.target.id);
-
     switch (val.target.id) {
       case "GsonLayer":
         setViewState(VIEW_STATES[1]);
@@ -90,6 +90,9 @@ const Main = () => {
       setInfo(infoValue.object);
     }
   };
+  const onChangePopulationLimitHandler = (val) => {
+    setPopulationLimit(parseInt(val.target.value));
+  }
 
   return (
     <div>
@@ -101,6 +104,7 @@ const Main = () => {
         continent={continent}
         onHoverInfo={onHoverInfoHandler}
         viewState={viewState}
+        populationLimit={populationLimit}
       />
       <MenuTop name="@deck.gl - DEMO" onSelectMap={onSelectMapHandler} />
       <Container fluid style={{ paddingTop: 15 + "px" }}>
@@ -120,6 +124,8 @@ const Main = () => {
               onClickContinent={onClickContinentHandler}
               info={info}
               continents={continents}
+              populationLimit={populationLimit}
+              onChangePopulationLimit={onChangePopulationLimitHandler}
             />
           </Col>
         </Row>

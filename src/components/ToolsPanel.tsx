@@ -18,6 +18,8 @@ const ToolsPanel = (props) => {
     continent,
     info,
     continents,
+    populationLimit,
+    onChangePopulationLimit,
     onChangelineWidth,
     onChangeColor,
     onChangeColorStroke,
@@ -26,6 +28,7 @@ const ToolsPanel = (props) => {
   } = props;
 
   const [totalPopulation, setTotalPopulation] = useState(0);
+
 
   useEffect(() => {
     if (continents.length > 0) {
@@ -143,6 +146,21 @@ const ToolsPanel = (props) => {
         <Card>
           <Card.Body>
             <Form>
+              <Row>
+                <Col xs={12} lg={12}>
+                  <Form.Group controlId="formBasicRange3">
+                    <Form.Label>Population Limit: {Intl.NumberFormat().format(populationLimit)}</Form.Label>
+                    <Form.Control
+                      type="range"
+                      min="0"
+                      max={2000000000}
+                      value={populationLimit}
+                      onChange={onChangePopulationLimit}
+                    />
+                    
+                  </Form.Group>
+                </Col>
+              </Row>
               <Row>
                 <Col xs={12} lg={6}>
                   <Form.Group controlId="formBasicRange">

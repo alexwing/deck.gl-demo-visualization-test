@@ -54,8 +54,38 @@ export const LightenDarkenColor = function (col, amt) {
 
   return [r, g, b];
 };
+/**
+ * Converts a hex color code to an RGBA color array with the specified alpha value.
+ * @param col - The hex color code to convert.
+ * @param alpha - The alpha value to use for the RGBA color array. Defaults to 255.
+ * @returns An RGBA color array with the specified alpha value.
+ */
+export function AlphaColor({
+  col,
+  alpha = 255,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  col: any | string;
+  alpha?: number;
+}): Array<number> {
+  if (col[0] === "#") {
+    col = col.slice(1);
+  }
+  let r: number = parseInt(col[0]);
+  let g: number = parseInt(col[1]);
+  let b: number = parseInt(col[2]);
 
-export function LazyRound(num) {
+  if (r > 255) r = 255;
+  else if (r < 0) r = 0;
+
+  if (b > 255) b = 255;
+  else if (b < 0) b = 0;
+
+  if (g > 255) g = 255;
+  else if (g < 0) g = 0;
+  return [r, g, b, alpha];
+}
+export function LazyRound(num: string) {
   var parts = num.split(".");
   return parts.length > 1
     ? Math.round(

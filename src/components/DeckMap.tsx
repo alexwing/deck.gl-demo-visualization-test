@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import Map, { ViewState } from "react-map-gl";
 import { DataFilterExtension } from "@deck.gl/extensions";
 import DeckGL from "@deck.gl/react";
-import { LightenDarkenColor, colorScale, hashString } from "./Utils";
+import {
+  AlphaColor,
+  LightenDarkenColor,
+  colorScale,
+  hashString,
+} from "./Utils";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
 import mapVancouver from "../db/vancouver-blocks.geojson";
@@ -16,12 +21,19 @@ const DeckMap = ({
   colorHeight,
   continent,
   lineWidth,
+  populationLimit,
 }) => {
   const regionLength = (properties) => {
     if (!properties.name) {
       return 0;
     }
-    return (1 / properties.name.length) * 10;
+    // percentage of population with respect to the total population
+    const pop = properties.pop_est;
+    const total = 500000000;
+    const percent = (pop / total) * 100;
+    // percentage of the color and colorHeight with respect to the total percentage
+    const colorPercent = (colorHeight / 100) * percent;
+    return colorPercent;
   };
   const [mapStyle, setMapStyle] = useState("");
 
@@ -53,17 +65,24 @@ const DeckMap = ({
        extruded: true,
        getElevation: (f) => Math.sqrt(f.properties.pop_est) * 20,
     End of extruded */
-    /** Begin of the filter by continent calculated by hash */
+    /** Begin of the filter by continent calculated by hash 
     extensions: [new DataFilterExtension({ filterSize: 1 })],
     getFilterValue: (f) =>
       hashString(continent === "All" ? "All" : f.properties.continent),
     filterRange: [hashString(continent), hashString(continent)],
     /** End of the filter */
+    /** With population limit */
+    extensions: [new DataFilterExtension({ filterSize: 1 })],
+    getFilterValue: (f) => parseInt(f.properties.pop_est),
+    filterRange: [0, populationLimit],
     getFillColor: (object) =>
-      LightenDarkenColor(
-        color,
-        regionLength(object.properties) / (colorHeight / 10)
-      ),
+      AlphaColor({
+        col: LightenDarkenColor(
+          color,
+          regionLength(object.properties) 
+        ),
+        alpha: continent === "All" ? 255 : (continent === object.properties.continent ? 255 : 20),
+      }),
     opacity: 1,
     pickable: true,
     lineWidthMinPixels: lineWidth,
@@ -71,13 +90,20 @@ const DeckMap = ({
       lineWidthMinPixels: lineWidth,
       getLineColor: colorStroke,
       getFillColor: (object) =>
-        LightenDarkenColor(
+      AlphaColor({
+        col: LightenDarkenColor(
           color,
-          regionLength(object.properties) / (colorHeight / 10)
+          regionLength(object.properties)
         ),
-      //filter to selected continent hash [initial value, final value]
+        alpha: continent === "All" ? 255 : (continent === object.properties.continent ? 255 : 20),
+      }),
+      /* filter to selected continent hash [initial value, final value]
       getFilterValue: (f) =>
         hashString(continent === "All" ? "All" : f.properties.continent),
+      */
+      /* filter to population limit */
+      getFilterValue: (f) => parseInt(f.properties.pop_est),
+      filterRange: [0, populationLimit],
     },
     onClick: (info) => {
       alert(info.object.properties.name);
