@@ -1,63 +1,96 @@
-import React, { Component } from 'react';
-import { CartoSQLLayer } from '@deck.gl/carto';
+import React from "react";
+import { StaticMap } from "react-map-gl";
+import { DataFilterExtension } from "@deck.gl/extensions";
+import DeckGL from "@deck.gl/react";
+import { LightenDarkenColor, colorScale, hashString } from "./Utils";
+import { GeoJsonLayer } from "@deck.gl/layers";
 
-import { StaticMap } from 'react-map-gl';
-import DeckGL from '@deck.gl/react';
-import {LightenDarkenColor,colorScale} from './Utils.js';
-import {GeoJsonLayer} from '@deck.gl/layers';
+import mapVancouver from "../db/vancouver-blocks.geojson";
+import mapWoldPop from "../db/world-population.geojson";
 
-
-//import json from '../db/cartodb-query.json';
-import json from '../db/vancouver-blocks.json';
-
-
-export default class DeckMap extends Component {
-
-  render() {
-    const {onHoverInfo,onDataLoaded,viewState } = this.props;
-    function getContinentCondition(continent) {
-      return continent !== 'All' ? `WHERE continent='${continent}'` : '';
+const DeckMap = ({
+  onHoverInfo,
+  viewState,
+  colorStroke,
+  color,
+  colorHeight,
+  continent,
+  lineWidth,
+}) => {
+  const regionLength = (properties) => {
+    if (!properties.name) {
+      return 0;
     }
-    const layers = [ new GeoJsonLayer({
-      data: json,
-      opacity: 0.8,
-      stroked: false,
-      filled: true,
-      extruded: true,
-      wireframe: true,
-      getElevation: f => Math.sqrt(f.properties.valuePerSqm) * 10,
-      getFillColor: f => colorScale(f.properties.growth),
-      getLineColor: [255, 255, 255],
-      pickable: true,
-    }),
-    new CartoSQLLayer({
-      data: `SELECT *, (pop_est* 100 / (SELECT SUM(pop_est) FROM public.ne_50m_admin_0_countries)) as percent FROM public.ne_50m_admin_0_countries ${getContinentCondition(this.props.continent)}`,
-      pointRadiusMinPixels: 6,
-      getLineColor: this.props.colorStroke,
-      getFillColor: (object) => LightenDarkenColor(this.props.color,(object.properties.percent/ (this.props.colorHeight/10))),
-      opacity: 0.8,
-      pickable: true,
-      lineWidthMinPixels: this.props.lineWidth,
-      updateTriggers: {
-        lineWidthMinPixels: this.props.lineWidth,
-        getLineColor: this.props.colorStroke,
-        getFillColor: (object) => LightenDarkenColor(this.props.color,(object.properties.percent/ (this.props.colorHeight/10)))
-      },
-      onHover: info => onHoverInfo(info),
-      onDataLoad: onDataLoaded()
+    return (1 / properties.name.length) * 10;
+  };
 
-    })
-  
-  ];
-    return <div>
+  const populationLayer = new GeoJsonLayer({
+    id: "map-vancouver",
+    data: mapVancouver,
+    opacity: 0.8,
+    stroked: false,
+    filled: true,
+    extruded: true,
+    wireframe: true,
+    getElevation: (f) => Math.sqrt(f.properties.valuePerSqm) * 10,
+    getFillColor: (f) => colorScale(f.properties.growth),
+    pickable: true,
+  });
+
+  const worldLayer = new GeoJsonLayer({
+    id: "world-borders",
+    data: mapWoldPop,
+    pointRadiusMinPixels: 6,
+    getLineColor: colorStroke,
+    /** Begin of extruded by population 
+       extruded: true,
+       getElevation: (f) => Math.sqrt(f.properties.pop_est) * 20,
+    End of extruded */
+    /** Begin of the filter by continent calculated by hash */
+    extensions: [new DataFilterExtension({ filterSize: 1 })],
+    getFilterValue: (f) =>
+      hashString(continent === "All" ? "All" : f.properties.continent),
+    filterRange: [hashString(continent), hashString(continent)],
+    /** End of the filter */
+    getFillColor: (object) =>
+      LightenDarkenColor(
+        color,
+        regionLength(object.properties) / (colorHeight / 10)
+      ),
+    opacity: 1,
+    pickable: true,
+    lineWidthMinPixels: lineWidth,
+    updateTriggers: {
+      lineWidthMinPixels: lineWidth,
+      getLineColor: colorStroke,
+      getFillColor: (object) =>
+        LightenDarkenColor(
+          color,
+          regionLength(object.properties) / (colorHeight / 10)
+        ),
+      //filter to selected continent hash [initial value, final value]
+      getFilterValue: (f) =>
+        hashString(continent === "All" ? "All" : f.properties.continent),
+    },
+    onClick: (info) => {
+      alert(info.object.properties.name);
+    },
+    onHover: (info) => {
+      onHoverInfo(info);
+    },
+  });
+
+  const layers = [populationLayer, worldLayer];
+
+  return (
+    <div>
       <DeckGL
         width="100%"
         height="100%"
         initialViewState={viewState}
         controller={true}
-        //   effects= {postProcessEffect}
         layers={[layers]}
-      >    
+      >
         <StaticMap
           reuseMaps
           mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
@@ -65,6 +98,7 @@ export default class DeckMap extends Component {
         />
       </DeckGL>
     </div>
-  }
+  );
+};
 
-}
+export default DeckMap;

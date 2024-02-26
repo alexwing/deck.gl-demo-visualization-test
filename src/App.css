@@ -1,13 +1,19 @@
-body{
-    background-color: darkgray;
+body {
+  background-color: darkgray;
 }
 
 .accordion .card-header:after {
-    font-weight: bolder;
-    content: "+";
-    float: right; 
-    margin-top:-2px
+  font-weight: bolder;
+  content: "+";
+  float: right;
+  margin-top: -2px;
 }
-.accordion, .navbar {
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 12px;
+.accordion,
+.navbar {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 12px;
+}
+.tablePop {
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 10px;
 }
