@@ -1,5 +1,5 @@
-import React from "react";
-import { StaticMap } from "react-map-gl";
+import React, { useEffect, useState } from "react";
+import Map, { ViewState } from "react-map-gl";
 import { DataFilterExtension } from "@deck.gl/extensions";
 import DeckGL from "@deck.gl/react";
 import { LightenDarkenColor, colorScale, hashString } from "./Utils";
@@ -23,6 +23,15 @@ const DeckMap = ({
     }
     return (1 / properties.name.length) * 10;
   };
+  const [mapStyle, setMapStyle] = useState("");
+
+
+    //set mapStyle by theme
+    useEffect(() => {
+      setMapStyle(
+          "https://basemaps.cartocdn.com/gl/voyager-nolabels-gl-style/style.json"
+      );
+    }, []);
 
   const populationLayer = new GeoJsonLayer({
     id: "map-vancouver",
@@ -91,11 +100,7 @@ const DeckMap = ({
         controller={true}
         layers={[layers]}
       >
-        <StaticMap
-          reuseMaps
-          mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
-          preventStyleDiffing
-        />
+        <Map  mapStyle={mapStyle}  />
       </DeckGL>
     </div>
   );
