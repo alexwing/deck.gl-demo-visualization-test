@@ -31,7 +31,7 @@ const VIEW_STATES = [
 ];
 
 const Main = () => {
-  const [lineWidth, setLineWidth] = useState(2);
+  const [lineWidth, setLineWidth] = useState(1);
   const [colorHeight, setColorHeight] = useState(14);
   const [color, setColor] = useState([255, 0, 0]);
   const [colorStroke, setColorStroke] = useState([0, 0, 0]);

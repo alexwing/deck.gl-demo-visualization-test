@@ -36,6 +36,7 @@ const DeckMap = ({
     return colorPercent;
   };
   const [mapStyle, setMapStyle] = useState("");
+  const [selected, setSelected] = useState(null as any);
 
   useEffect(() => {
     setMapStyle(
@@ -55,6 +56,26 @@ const DeckMap = ({
     getFillColor: (f) => colorScale(f.properties.growth),
     pickable: true,
   });
+
+  const getSelectedColor = (object: any) => {
+    if (
+      selected !== null &&
+      selected?.properties?.name === object?.properties?.name
+    ) {
+      return [255, 255, 0];
+    }
+    return LightenDarkenColor(color, regionLength(object?.properties));
+  };
+
+  const getAlpha = (object: any) => {
+    if (continent === "All") {
+      return 255;
+    }
+    if (continent === object?.properties?.continent) {
+      return 255;
+    }
+    return 20;
+  };
 
   const worldLayer = new GeoJsonLayer({
     id: "world-borders",
@@ -77,11 +98,8 @@ const DeckMap = ({
     filterRange: [0, populationLimit],
     getFillColor: (object) =>
       AlphaColor({
-        col: LightenDarkenColor(
-          color,
-          regionLength(object.properties) 
-        ),
-        alpha: continent === "All" ? 255 : (continent === object.properties.continent ? 255 : 20),
+        col: getSelectedColor(object),
+        alpha: getAlpha(object),
       }),
     opacity: 1,
     pickable: true,
@@ -90,13 +108,10 @@ const DeckMap = ({
       lineWidthMinPixels: lineWidth,
       getLineColor: colorStroke,
       getFillColor: (object) =>
-      AlphaColor({
-        col: LightenDarkenColor(
-          color,
-          regionLength(object.properties)
-        ),
-        alpha: continent === "All" ? 255 : (continent === object.properties.continent ? 255 : 20),
-      }),
+        AlphaColor({
+          col: getSelectedColor(object),
+          alpha: getAlpha(object),
+        }),
       /* filter to selected continent hash [initial value, final value]
       getFilterValue: (f) =>
         hashString(continent === "All" ? "All" : f.properties.continent),
@@ -106,7 +121,11 @@ const DeckMap = ({
       filterRange: [0, populationLimit],
     },
     onClick: (info) => {
-      alert(info.object.properties.name);
+      if (info.object === selected) {
+        setSelected(null);
+      } else {
+        setSelected(info.object);
+      }
     },
     onHover: (info) => {
       onHoverInfo(info);
