@@ -23,6 +23,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "src/geojson.d.ts"
   ]
 }
