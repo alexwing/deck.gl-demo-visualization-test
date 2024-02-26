@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
@@ -24,6 +24,22 @@ const ToolsPanel = (props) => {
     onClickContinent,
     onChangeColorHeight,
   } = props;
+
+  const [totalPopulation, setTotalPopulation] = useState(0);
+
+  useEffect(() => {
+    if (continents.length > 0) {
+      const total = continents.reduce((acc, c) => acc + c.population, 0);
+      setTotalPopulation(total);
+    }
+  }, [continents]);
+
+  const calcPercent = (pop) => {
+    if (pop === 0) {
+      return 0;
+    }
+    return (pop / totalPopulation) * 100;
+  }
 
   const Legend = (
     <Row style={{ marginLeft: "-20px", marginRight: "-20px" }}>
@@ -62,14 +78,14 @@ const ToolsPanel = (props) => {
                   ? Intl.NumberFormat("en-IN", {
                       maximumFractionDigits: 1,
                       minimumFractionDigits: 1,
-                    }).format(info.properties.percent) + "%"
+                    }).format(calcPercent(info.properties.pop_est)) + "%"
                   : "0%"}
               </td>
               <td className="table-info" align="right">
                 <MDBProgress
                   material
                   value={
-                    info !== null ? Math.round(info.properties.percent) : 0
+                    info !== null ? Math.round(calcPercent(info.properties.pop_est)) : 0
                   }
                   height="20px"
                   color="success"
