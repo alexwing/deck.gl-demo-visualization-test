@@ -105,7 +105,7 @@ const Main = () => {
       <MenuTop name="@deck.gl - DEMO" onSelectMap={onSelectMapHandler} />
       <Container fluid style={{ paddingTop: 15 + "px" }}>
         <Row>
-          <Col xs={8} md={4} lg={4} xl={3}>
+          <Col xs={8} md={4} lg={4} xl={4}>
             <ToolsPanel
               name="Tools"
               lineWidth={lineWidth}

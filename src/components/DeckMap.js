@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StaticMap } from "react-map-gl";
 import { DataFilterExtension } from "@deck.gl/extensions";
 import DeckGL from "@deck.gl/react";
-import { LightenDarkenColor, colorScale,hashString } from "./Utils";
+import { LightenDarkenColor, colorScale, hashString } from "./Utils";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
 import mapVancouver from "../db/vancouver-blocks.geojson";
@@ -17,7 +17,6 @@ const DeckMap = ({
   continent,
   lineWidth,
 }) => {
-
   const regionLength = (properties) => {
     if (!properties.name) {
       return 0;
@@ -43,9 +42,16 @@ const DeckMap = ({
     data: mapWoldPop,
     pointRadiusMinPixels: 6,
     getLineColor: colorStroke,
+    /** Begin of extruded by population 
+       extruded: true,
+       getElevation: (f) => Math.sqrt(f.properties.pop_est) * 20,
+    End of extruded */
+    /** Begin of the filter by continent calculated by hash */
     extensions: [new DataFilterExtension({ filterSize: 1 })],
-    getFilterValue: (f) => hashString(continent === "All" ? "All" : f.properties.continent),
-    filterRange:  [hashString(continent), hashString(continent)],
+    getFilterValue: (f) =>
+      hashString(continent === "All" ? "All" : f.properties.continent),
+    filterRange: [hashString(continent), hashString(continent)],
+    /** End of the filter */
     getFillColor: (object) =>
       LightenDarkenColor(
         color,
@@ -62,11 +68,11 @@ const DeckMap = ({
           color,
           regionLength(object.properties) / (colorHeight / 10)
         ),
-      getFilterValue: (f) => hashString(continent === "All" ? "All" : f.properties.continent),
+      //filter to selected continent hash [initial value, final value]
+      getFilterValue: (f) =>
+        hashString(continent === "All" ? "All" : f.properties.continent),
     },
     onClick: (info) => {
-      console.log(hashString(info.object.properties.continent), hashString(continent));
-      console.log(info.object.properties.continent, continent);
       alert(info.object.properties.name);
     },
     onHover: (info) => {

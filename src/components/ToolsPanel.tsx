@@ -28,7 +28,7 @@ const ToolsPanel = (props) => {
 
   const Legend = (
     <Row style={{ marginLeft: "-20px", marginRight: "-20px" }}>
-      <Col lg={12} style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+      <Col lg={12} className='tablePop'>
         <Table striped bordered hover size="sm" className="legend">
           <thead>
             <tr>
@@ -45,7 +45,7 @@ const ToolsPanel = (props) => {
                 {info !== null ? (
                   info.properties.name
                 ) : (
-                  <i style={{ color: "gray" }}>Mouse info here</i>
+                  <i style={{ color: "gray" }}>info here</i>
                 )}
               </td>
               <td className="table-info" align="right">
@@ -126,7 +126,7 @@ const ToolsPanel = (props) => {
       </Accordion.Item>
       <Accordion.Collapse eventKey="0">
         <Card>
-          <Card.Body style={{ overflowY: "auto", maxHeight: height - 140 + "px" }}>
+          <Card.Body>
             <Form>
               <Row>
                 <Col xs={12} lg={6}>

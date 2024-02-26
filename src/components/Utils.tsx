@@ -64,16 +64,6 @@ export function LazyRound(num) {
     : parts[0];
 }
 
-export async function Querydb(sql) {
-  return fetch("https://public.carto.com/api/v2/sql?q=" + sql, {
-    method: "GET",
-    headers: new Headers({
-      Accept: "application/json",
-    }),
-  })
-    .then((res) => res.json())
-    .catch((error) => console.log(error));
-}
 
 /***
  * @param {string} str
