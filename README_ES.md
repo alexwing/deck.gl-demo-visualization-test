@@ -88,7 +88,7 @@ Por otra parte estan los servicios de mapas, que son servicios que proporcionan 
 
 También existen servidores dedicados, que pueden ser montados en un servidor propio. Algunos de los servidores de mapas más conocidos son GeoServer, MapServer, etc.
 
-Estos serviciós requiren de un cliente para poder visualizar los datos, y es aquí donde entran en juego las librerías de visualización de datos geoespaciales. Las ás conocidas son Leaflet, OpenLayers, Mapbox GL, Deck.gl, etc.
+Estos serviciós requiren de un cliente para poder visualizar los datos, y es aquí donde entran en juego las librerías de visualización de datos geoespaciales. Las más conocidas son Leaflet, OpenLayers, Mapbox GL, Deck.gl, etc.
 
 ## 2.4. Base de datos geoespaciales
 
@@ -129,14 +129,14 @@ SELECT row_to_json((SELECT d FROM (SELECT id, nombre, ST_AsGeoJSON(ST_Transform(
 -- Consulta que genera un GeoJSON a partir de un polígono con atributos y proyección
 
 SELECT jsonb_build_object(
-    'type',     'FeatureCollection',
-    'features', jsonb_agg(feature)
+    'type',     'FeatureCollection', /* Genera un objeto GeoJSON de tipo FeatureCollection */
+    'features', jsonb_agg(feature) /* Genera un array de objetos GeoJSON */
 )
 FROM (
   SELECT jsonb_build_object(
-    'type',       'Feature',
-    'geometry',   ST_AsGeoJSON(geom)::jsonb,
-    'properties', to_jsonb(row) - 'geom'
+    'type',       'Feature', /* Genera un objeto GeoJSON de tipo Feature */
+    'geometry',   ST_AsGeoJSON(geom)::jsonb, /* Genera el campo geom en formato GeoJSON */
+    'properties', to_jsonb(row) - 'geom' /* Añade el resto de campos como atributos y elimina el campo geom */
   ) AS feature
   FROM (	
         select
@@ -146,7 +146,7 @@ FROM (
         from
                 public.spanish_provinces sp  
   )
- row) features;
+ row) features; 
   
 
 ```
@@ -164,7 +164,7 @@ QGIS es un Sistema de Información Geográfica (SIG) de código abierto que perm
 
 Desde el punto de vista como programadores, QGIS es una herramienta muy útil para la edición y visualización de datos geoespaciales. QGIS permite importar y exportar datos geoespaciales en diferentes formatos, realizar análisis espaciales, crear mapas temáticos, etc. 
 
-No es nuestro objetivo la realización de mapas, eso es un trabajo de los cartógrafos, pero si nuestro objetivo la visualización de datos geoespaciales en aplicaciones web, es importante que sepamos cómo se realizan estos trabajos en QGIS para poder entender los datos que vamos a visualizar y poder realizar las transformaciones necesarias.
+No es nuestro objetivo la realización de mapas, eso es un trabajo de los cartógrafos, pero si es nuestro objetivo la visualización de datos geoespaciales en aplicaciones web, es importante que sepamos cómo se realizan estos trabajos en QGIS para poder entender los datos que vamos a visualizar y poder realizar las transformaciones necesarias.
 
 Algunas de la funcionalidaes que probablemente tengamos que usar en nuestros proyectos son:
 
