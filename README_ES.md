@@ -1,5 +1,3 @@
-
-
 - [1. Pincho sobre Cartografía, React y Deck.gl](#1-pincho-sobre-cartografía-react-y-deckgl)
 - [2. Principios básicos sobre cartografía orientada a la web](#2-principios-básicos-sobre-cartografía-orientada-a-la-web)
   - [2.1. Coordenadas geográficas](#21-coordenadas-geográficas)
@@ -8,7 +6,8 @@
   - [2.4. Base de datos geoespaciales](#24-base-de-datos-geoespaciales)
 - [3. QGIS](#3-qgis)
 - [4. Formato GeoJSON](#4-formato-geojson)
-- [5. @deck.gl Demo](#5-deckgl-demo)
+- [5. @deck.gl](#5-deckgl)
+- [6. Aplicación de demostración de Deck.gl](#6-aplicación-de-demostración-de-deckgl)
 
 
 # 1. Pincho sobre Cartografía, React y Deck.gl
@@ -260,23 +259,141 @@ Por lo que la estructura de un fichero GeoJSON es la siguiente:
 
 - Atributos: representan la información asociada a los objetos geoespaciales. Los atributos se representan como pares clave-valor, pueden ser de diferentes tipos, como texto, número, booleano, etc.
 
+# 5. @deck.gl
 
-# 5. @deck.gl Demo
+Deck.gl es un framework de visualización con tecnología de WebGL que proporciona una variedad de visualizaciones de datos en 2D y 3D fáciles de usar y compatibles con grandes conjuntos de datos.
 
-Aplicación de prueba de Deck.gl usando React. La aplicación se ha dividido en diferentes componentes de React que se comunican entre sí. En el panel de herramientas, se pueden realizar las siguientes modificaciones en el mapa:
 
-* Cambiar vista (Mostrar GeoJsonLayer)
-* Seleccionar el continente
-* Grosor de la línea
-* Escala de altura del color
-* Color de la línea
-* Color del polígono (el color será más oscuro dependiendo del nivel de población del país)
-* Tabla con información del país al colocar el mouse sobre el polígono
-* Leyenda de población y conteo de países por continente
+Las capas en deck.gl se dividen en varias categorías:
 
-Otras características que aún tengo que explorar:
+1. Capas Básicas: Son las capas fundamentales que se utilizan como bloques de construcción para visualizaciones de datos. Incluyen capas como ArcLayer, BitmapLayer, ColumnLayer, etc.
 
-* Probar algunos otros componentes como ArcLayer, HexagonLayer, GridCellLayer, etc.
-* Poder seleccionar las capas que se mostrarán y hacer zoom en el alcance de cada una.
+2. Capas de Agregación: Estas capas agregan datos de entrada y los visualizan en representaciones alternativas, como cuadrículas, binning hexagonal, contornos y mapas de calor.
 
-Aplicación de prueba en http://aaranda.es/static/deckgl/
+3. Capas Geoespaciales: Dirigidas específicamente a la visualización de datos geoespaciales, incluyendo soporte para teselas de mapas, sistemas de indexación geoespacial populares, formatos GIS, etc.
+
+4. Capas de Malla: Visualizan modelos 3D, con soporte experimental para escenas en formato glTF.
+
+Cada categoría tiene su conjunto de capas especializadas que se adaptan a diferentes necesidades de visualización de datos.
+
+Algunas de las más comunes son:
+
+- **GeoJsonLayer**: Renderiza datos geoespaciales en formato GeoJSON.
+- **IconLayer**: Representa iconos rasterizados en coordenadas dadas. 
+- **TextLayer**: Renderiza texto en coordenadas dadas.
+- **BitmapLayer**: Renderiza imágenes georreferenciadas.
+- **ArcLayer**: Renderiza arcos elevados que unen pares de coordenadas de origen y destino.
+- **ColumnLayer**: Renderiza cilindros extruidos (polígonos regulares teselados) en coordenadas dadas. 
+- **GridCellLayer**: Aagrega datos en un mapa de calor basado en cuadrícula.
+y muchas más... 
+
+> Más info: https://deck.gl/docs/api-reference/layers
+
+
+Para añadir de fondo un mapa estático, se puede utilizar el componente `StaticMap` que proporciona Deck.gl. Este componente permite añadir un mapa estático de Mapbox, Google Maps, OpenStreetMap, etc.
+
+```jsx
+import { DeckGL } from '@deck.gl/react';
+import { GeoJsonLayer } from '@deck.gl/layers';
+import Map  from "react-map-gl";
+
+/* Capa GeoJsonLayer 
+*  Representa datos de la ciudad de Vancouver en formato GeoJSON
+*  Cada polígono representa un bloque de la ciudad
+*  La altura de cada polígono se basa en el valor de la propiedad valuePerSqm
+*  El color de cada polígono se basa en el valor de la propiedad growth
+*/
+const geojsonLayer = new GeoJsonLayer({
+  id: 'geojson-layer',
+  data: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/geojson/vancouver-blocks.json',
+  opacity: 0.8,
+  stroked: false,
+  filled: true,
+  extruded: true,
+  wireframe: true,
+  getElevation: f => Math.sqrt(f.properties.valuePerSqm) * 500,
+  getFillColor: f => colorScale(f.properties.growth),
+  getLineColor: [255, 255, 255],
+  pickable: true
+});
+// Vista inicial del mapa, las coordenadas son de la ciudad de Vancouver 
+// con inclinación y orientación de la cámara para dar un efecto 3
+const INITIAL_VIEW_STATE = {
+  latitude: 49.254,
+  longitude: -123.13,
+  zoom: 11,
+  bearing: 140,
+  pitch: 60
+};D
+
+<DeckGL
+  initialViewState={INITIAL_VIEW_STATE} // Vista inicial
+  controller={true} // Habilita el control de la cámara
+  layers={[geojsonLayer]}>
+    <Map
+        mapStyle="https://basemaps.cartocdn.com/gl/voyager-nolabels-gl-style/style.json"
+        /> <!-- Mapa de fondo usando Mapbox y los servicios de Carto -->
+</DeckGL>
+
+```
+
+# 6. Aplicación de demostración de Deck.gl
+
+Esta aplicación React demuestra las capacidades de Deck.gl para la visualización geoespacial interactiva. Permite a los usuarios explorar datos de población mundial, filtrar por continente, ajustar parámetros de estilo y mostrar información adicional al pasar el cursor.
+
+**Características clave:**
+
+- **Mapa interactivo:** Utiliza `react-map-gl` para renderizar un mapa base y posicionar la visualización.
+- **Datos de población mundial:** Aprovecha las capas GeoJSON para mostrar las fronteras mundiales y los datos de población.
+- **Filtrado por continente:** Permite a los usuarios seleccionar un continente específico para resaltar países.
+- **Estilo dinámico:** Proporciona controles para ajustar el ancho de línea, las escalas de color y la elevación en función de la población.
+- **Interacciones al pasar el cursor:** Muestra información detallada sobre los países al pasar el cursor, incluidas las estimaciones de población.
+
+**Uso:**
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/alexwing/deck.gl-demo-visualization-test.git
+   ```
+2. **Instalar dependencias:**
+   ```bash
+   cd deck.gl-demo-visualization-test
+   npm install
+   ```
+3. **Ejecutar la aplicación:**
+   ```bash
+   npm start
+   ```
+
+**Demostración en vivo:**
+
+Visite [enlace a la demostración en vivo] para experimentar la aplicación de forma interactiva.
+
+**Estructura del código:**
+
+- `App.tsx`: El componente principal que renderiza la aplicación y maneja el estado global.
+- `DeckMap.tsx`: El componente principal responsable de renderizar el mapa, las capas y manejar las interacciones del usuario.
+- `Utils.js`: Contiene funciones de utilidad para la manipulación y cálculo del color.
+- `ToolsPanel.tsx`: El componente que proporciona controles para ajustar el estilo y el filtrado de datos.
+- `MenuTop.tsx`: El componente que proporciona controles para seleccionar dos vistas predefinidas.
+- `db/`: Almacena los archivos de datos GeoJSON (`vancouver-blocks.geojson`, `world-population.geojson`, `spain.geojson`).
+
+**Detalles técnicos:**
+
+- **Bibliotecas:** React, react-map-gl, Deck.gl
+- **Formato de datos:** GeoJSON
+
+**Mejoras futuras:**
+
+- Explorar capas Deck.gl adicionales como ArcLayer, HexagonLayer y GridCellLayer.
+- Implementar la funcionalidad de zoom para ajustar a capas específicas o datos filtrados.
+- Integrar una leyenda para visualizar la escala de color y la distribución de la población.
+
+**Consideraciones a tener en cuenta:**
+
+Usar la versión de "react-map-gl": "5.3.21" ya que a partir de la versión 6.0.0, se requiere una clave de acceso a Mapbox para usar el servicio de mapas. Ya existen un proyecto de código abierto llamado mapLibre que permite usar mapas de Mapbox sin necesidad de una clave de acceso, pero aun no es compatible con "react-map-gl".
+
+> *Con la v2.0, Mapbox GL JS se volvió propietario y requiere una cuenta de Mapbox para usarlo, incluso si no carga teselas del servicio de datos de Mapbox. Los forks de la comunidad del código base v1, como MapLibre GL JS, generalmente se pueden usar como un reemplazo directo de mapbox-gl.*
+
+
+
