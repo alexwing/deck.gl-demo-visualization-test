@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Map, { ViewState } from "react-map-gl";
+import Map  from "react-map-gl";
 import { DataFilterExtension } from "@deck.gl/extensions";
 import DeckGL from "@deck.gl/react";
 import {
   AlphaColor,
   LightenDarkenColor,
   colorScale,
-  hashString,
 } from "./Utils";
 import { GeoJsonLayer } from "@deck.gl/layers";
 
 import mapVancouver from "../db/vancouver-blocks.geojson";
 import mapWoldPop from "../db/world-population.geojson";
+import spain from "../db/spain.geojson";
 
 const DeckMap = ({
   onHoverInfo,
@@ -132,7 +132,17 @@ const DeckMap = ({
     },
   });
 
-  const layers = [populationLayer, worldLayer];
+  const spainLayer = new GeoJsonLayer({
+    id: "spain",
+    data: spain,
+    stroked: true,
+    filled: true,
+    lineWidthMinPixels: 1,
+    getLineColor: [100, 100, 100],
+    getFillColor: [200, 200, 200],
+    pickable: false,
+  });
+  const layers = [populationLayer, worldLayer, spainLayer];
 
   return (
     <div>

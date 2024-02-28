@@ -59,7 +59,7 @@ En la web, las proyecciones más utilizadas son:
 - Proyección WGS84: es una proyección esférica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:4326.
 - Proyección Web Mercator: es una proyección cilíndrica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:3857.
 
-La proyección de Web Mercator es el estándar de facto para aplicaciones de mapas web. Saltó a la fama cuando Google Maps lo adoptó en 2005.2​ Es utilizado por prácticamente todos los principales proveedores de mapas en línea, incluidos Google Maps, CARTO, Mapbox,3​ Bing Maps, OpenStreetMap, MapQuest, Esri y muchos otros.
+La proyección de Web Mercator es el estándar de facto para aplicaciones de mapas web. Saltó a la fama cuando Google Maps lo adoptó en 2005.​ Es utilizado por prácticamente todos los principales proveedores de mapas en línea, incluidos Google Maps, CARTO, Mapbox,3​ Bing Maps, OpenStreetMap, MapQuest, Esri y muchos otros.
 
 Aunque en los últimos años, Google Maps en su versión de escritorio ha adoptado la proyección esférica WGS84.
 
@@ -123,27 +123,31 @@ SELECT row_to_json((SELECT d FROM (SELECT id, nombre, ST_AsGeoJSON(geom) AS geom
 -- Genera un GeoJSON a partir de un polígono con atributos y proyección
 SELECT row_to_json((SELECT d FROM (SELECT id, nombre, ST_AsGeoJSON(ST_Transform(geom, 3857)) AS geom) AS d)) FROM poligonos;
 
--- tabla:full_world_borders
--- campos: gid, iso3, status, color_code, name, continent, region, iso_3166_1, geom
+-- tabla: spanish_provinces
+-- campos: gid, geom, name
 
--- Consulta que genera un GeoJSON a partir de un polígono con atributos y proyección y filtra por el continente europeo
+-- Consulta que genera un GeoJSON a partir de un polígono con atributos y proyección
 
-SELECT json_agg(row_to_json(fc))
+SELECT jsonb_build_object(
+    'type',     'FeatureCollection',
+    'features', jsonb_agg(feature)
+)
 FROM (
-  SELECT 
-    'FeatureCollection' AS type,
-    array_to_json(array_agg(f)) AS features
-  FROM (
-    SELECT 
-      'Feature' AS type,
-      row_to_json((SELECT l FROM (SELECT gid, iso3, status, color_code, name, continent, region, iso_3166_1) AS l)) AS properties,
-      ST_AsGeoJSON(ST_Transform(geom, 3857))::json AS geometry
-    FROM 
-      full_world_borders        
-    WHERE 
-      continent = 'Europe'
-  ) AS f
-) AS fc;
+  SELECT jsonb_build_object(
+    'type',       'Feature',
+    'geometry',   ST_AsGeoJSON(geom)::jsonb,
+    'properties', to_jsonb(row) - 'geom'
+  ) AS feature
+  FROM (	
+        select
+                gid as cartodb_id,   		
+                geom,
+                name as name
+        from
+                public.spanish_provinces sp  
+  )
+ row) features;
+  
 
 ```
 
