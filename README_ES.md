@@ -5,11 +5,12 @@
   - [2.3. Formatos de datos geoespaciales](#23-formatos-de-datos-geoespaciales)
   - [2.4. Base de datos geoespaciales](#24-base-de-datos-geoespaciales)
 - [3. QGIS](#3-qgis)
-    - [Importar y exportar datos geoespaciales en diferentes formatos.](#importar-y-exportar-datos-geoespaciales-en-diferentes-formatos)
-    - [Realizar transformaciones de proyección.](#realizar-transformaciones-de-proyección)
-    - [Añadir y editar atributos de datos geoespaciales.](#añadir-y-editar-atributos-de-datos-geoespaciales)
-    - [Combinar o dividir capas de datos geoespaciales.](#combinar-o-dividir-capas-de-datos-geoespaciales)
-    - [Simplificar geometrías](#simplificar-geometrías)
+  - [3.1. Funcionalidades necesarias en nuestros proyectos](#31-funcionalidades-necesarias-en-nuestros-proyectos)
+    - [3.1.1. Importar y exportar datos geoespaciales en diferentes formatos.](#311-importar-y-exportar-datos-geoespaciales-en-diferentes-formatos)
+    - [3.1.2. Realizar transformaciones de proyección.](#312-realizar-transformaciones-de-proyección)
+    - [3.1.3. Añadir y editar atributos de datos geoespaciales.](#313-añadir-y-editar-atributos-de-datos-geoespaciales)
+    - [3.1.4. Combinar o dividir capas de datos geoespaciales.](#314-combinar-o-dividir-capas-de-datos-geoespaciales)
+    - [3.1.5. Simplificar geometrías](#315-simplificar-geometrías)
 - [4. Formato GeoJSON](#4-formato-geojson)
 - [5. @deck.gl](#5-deckgl)
   - [5.1. Capas de visualización](#51-capas-de-visualización)
@@ -181,9 +182,11 @@ Desde el punto de vista como programadores, QGIS es una herramienta muy útil pa
 
 No es nuestro objetivo la realización de mapas, eso es un trabajo de los cartógrafos, pero si es nuestro objetivo la visualización de datos geoespaciales en aplicaciones web, es importante que sepamos cómo se realizan estos trabajos en QGIS para poder entender los datos que vamos a visualizar y poder realizar las transformaciones necesarias.
 
-Algunas de la funcionalidaes que probablemente tengamos que usar en nuestros proyectos son:
+## 3.1. Funcionalidades necesarias en nuestros proyectos
 
-### Importar y exportar datos geoespaciales en diferentes formatos.
+Estas son algunas de las funcionalidades que necesitamos para usar en nuestros proyectos:
+
+### 3.1.1. Importar y exportar datos geoespaciales en diferentes formatos.
 
 Para importar datos geoespaciales en QGIS hay muchas maneras, pero por lo general basta con arrastrar el archivo a la ventana de QGIS. Luego hay un montón de opciones para importar desde bases de datos, servicios web, etc.
 
@@ -191,19 +194,19 @@ Para exportar datos geoespaciales en QGIS, se puede hacer clic derecho sobre la 
 
 <img src="./doc/exportar.gif" alt="Importar y exportar datos geoespaciales en QGIS" width="500" style="display: block; margin: 0 auto;"/>
 
-### Realizar transformaciones de proyección.
+### 3.1.2. Realizar transformaciones de proyección.
 
 Para realizar transformaciones de proyección en QGIS, ir a la opción "Vectorial" y seleccionar "Herramientas gestión de datos" y luego "Reproyectar capa". Luego seleccionar la proyección de salida deseada y hacer clic en "Aceptar".
 
 <img src="./doc/reproyectar.gif" alt="Transformación de proyección en QGIS" width="500" style="display: block; margin: 0 auto;"/>
 
-### Añadir y editar atributos de datos geoespaciales.
+### 3.1.3. Añadir y editar atributos de datos geoespaciales.
 
 Para editar atributos de datos geoespaciales en QGIS, hacer clic sobre el icono de edición de atributos, para añadir un nuevo atributo, hacer clic derecho sobre la capa y seleccionar "propiedades" y luego "campos". 
 
 <img src="./doc/atributos.gif" alt="Añadir y editar atributos de datos geoespaciales" width="500" style="display: block; margin: 0 auto;"/>
 
-### Combinar o dividir capas de datos geoespaciales.
+### 3.1.4. Combinar o dividir capas de datos geoespaciales.
 
 Para dividir capas de datos geoespaciales en QGIS basta con seleccionar los elementos que se quieren dividir y exportar con la opción de solo los elementos seleccionados.
 
@@ -211,7 +214,7 @@ Para combinar capas de datos geoespaciales en QGIS, hacer clic en vectorial y se
 
 <img src="./doc/union.gif" alt="Combinar o dividir capas de datos geoespaciales" width="500" style="display: block; margin: 0 auto;"/>
 
-### Simplificar geometrías
+### 3.1.5. Simplificar geometrías
 
 Para simplificar geometrías en QGIS, hacer clic en vectorial y seleccionar "Herramientas de geometría" y luego "Simplificar".
 
