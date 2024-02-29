@@ -220,7 +220,7 @@ Para simplificar geometrías en QGIS, hacer clic en vectorial y seleccionar "Her
 
 A menudo en necesario/recomendado esta simplificación para reducir el tamaño de los datos y mejorar el rendimiento de la aplicación web.
 
-<img src="./doc/simplificar.gif" alt="Simplificar geometrías en QGIS" width="500" style="display: block; margin: 0 auto;"/>
+<img src="./doc/Simplificar.gif" alt="Simplificar geometrías en QGIS" width="500" style="display: block; margin: 0 auto;"/>
 
 
 
