@@ -20,9 +20,9 @@
   - [6.2. Uso](#62-uso)
   - [6.3. Demostración en vivo](#63-demostración-en-vivo)
   - [6.4. Estructura del código](#64-estructura-del-código)
-    - [6.4.1. Detalles técnicos:](#641-detalles-técnicos)
-    - [6.4.2. Mejoras futuras:](#642-mejoras-futuras)
-  - [6.5. Consideraciones a tener en cuenta:\*\*](#65-consideraciones-a-tener-en-cuenta)
+    - [6.4.1. Detalles técnicos](#641-detalles-técnicos)
+    - [6.4.2. Mejoras futuras](#642-mejoras-futuras)
+  - [6.5. Consideraciones a tener en cuenta](#65-consideraciones-a-tener-en-cuenta)
 
 
 # 1. Pincho sobre Cartografía, React y Deck.gl
@@ -437,20 +437,20 @@ Visite [enlace a la demostración en vivo] para experimentar la aplicación de f
 - `MenuTop.tsx`: El componente que proporciona controles para seleccionar dos vistas predefinidas.
 - `db/`: Almacena los archivos de datos GeoJSON (`vancouver-blocks.geojson`, `world-population.geojson`, `spain.geojson`).
 
-### 6.4.1. Detalles técnicos:
+### 6.4.1. Detalles técnicos
 
 - **Bibliotecas:** React, react-map-gl, Deck.gl
 - **Formato de datos:** GeoJSON
 
-### 6.4.2. Mejoras futuras:
+### 6.4.2. Mejoras futuras
 
 - Explorar capas Deck.gl adicionales como ArcLayer, HexagonLayer y GridCellLayer.
 - Implementar la funcionalidad de zoom para ajustar a capas específicas o datos filtrados.
 - Integrar una leyenda para visualizar la escala de color y la distribución de la población.
 
-## 6.5. Consideraciones a tener en cuenta:**
+## 6.5. Consideraciones a tener en cuenta
 
-Usar la versión de "react-map-gl": "5.3.21" ya que a partir de la versión 6.0.0, se requiere una clave de acceso a Mapbox para usar el servicio de mapas. Ya existen un proyecto de código abierto llamado mapLibre que permite usar mapas de Mapbox sin necesidad de una clave de acceso, pero aun no es compatible con "react-map-gl".
+Usar la versión de "react-map-gl": "5.3.21" ya que a partir de la versión 6.0.0, se requiere una clave de acceso a Mapbox para usar el servicio de mapas. Ya existen un proyecto de código abierto llamado mapLibre que permite usar mapas de Mapbox sin necesidad de una clave de acceso. Realmente en principio los limites de uso de Mapbox son muy generosos, pero si se requiere una aplicación con un gran número de usuarios, puede ser una limitación.
 
 > *Con la v2.0, Mapbox GL JS se volvió propietario y requiere una cuenta de Mapbox para usarlo, incluso si no carga teselas del servicio de datos de Mapbox. Los forks de la comunidad del código base v1, como MapLibre GL JS, generalmente se pueden usar como un reemplazo directo de mapbox-gl.*
 
