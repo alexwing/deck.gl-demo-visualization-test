@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>1&period; Pincho sobre Cartograf&iacute;a&comma; React y Deck&period;gl</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <ul>
+<li><a href="#1-pincho-sobre-cartograf%C3%ADa-react-y-deckgl">1. Pincho sobre Cartografía, React y Deck.gl</a></li>
+<li><a href="#2-principios-b%C3%A1sicos-sobre-cartograf%C3%ADa-orientada-a-la-web">2. Principios básicos sobre cartografía orientada a la web</a>
+<ul>
+<li><a href="#21-coordenadas-geogr%C3%A1ficas">2.1. Coordenadas geográficas</a></li>
+<li><a href="#22-proyecciones-cartogr%C3%A1ficas">2.2. Proyecciones cartográficas</a></li>
+<li><a href="#23-formatos-de-datos-geoespaciales">2.3. Formatos de datos geoespaciales</a></li>
+<li><a href="#24-base-de-datos-geoespaciales">2.4. Base de datos geoespaciales</a></li>
+</ul>
+</li>
+<li><a href="#3-qgis">3. QGIS</a></li>
+<li><a href="#4-formato-geojson">4. Formato GeoJSON</a></li>
+<li><a href="#5-deckgl-demo">5. @deck.gl Demo</a></li>
+</ul>
+<h1 id="1-pincho-sobre-cartografía-react-y-deckgl">1. Pincho sobre Cartografía, React y <a href="http://Deck.gl">Deck.gl</a></h1>
+<p>En este pincho, vamos a explorar diferentes aspectos de la cartografía orientada a la web, los formatos de datos geoespaciales y las herramientas de edición y visualización de datos geoespaciales. También vamos a explorar diferentes aspectos de la librería de visualización de datos geoespaciales <a href="http://Deck.gl">Deck.gl</a> y cómo se puede integrar con React.</p>
+<h1 id="2-principios-básicos-sobre-cartografía-orientada-a-la-web">2. Principios básicos sobre cartografía orientada a la web</h1>
+<p>La cartografía es una disciplina que se encarga de la representación gráfica de la Tierra. En la actualidad, la cartografía se ha convertido en una herramienta fundamental para la toma de decisiones en diferentes ámbitos, como la planificación urbana, la gestión de recursos naturales, la gestión de desastres, la navegación, etc. un sin fin de usos que la han convertido en una herramienta fundamental para la toma de decisiones en diferentes ámbitos.</p>
+<p>En este pincho, vamos a centrarnos en la cartografía orientada a la web, los formatos de datos geoespaciales y las herramientas de edición y visualización de datos geoespaciales.</p>
+<h2 id="21-coordenadas-geográficas">2.1. Coordenadas geográficas</h2>
+<p>Las coordenadas geográficas son un sistema de referencia que se utiliza para representar la ubicación de un punto en la superficie de la Tierra. Las coordenadas geográficas se componen de dos valores: la latitud y la longitud.</p>
+<img src="file:///e:\projects\deck.gl-carto-data-visualization-test\doc\coordenadas.png" alt="Coordenadas geográficas" width="500" style="display: block; margin: 0 auto;"/>
+<p>Los sistemas de coordenadas geográficas más utilizados son:</p>
+<ul>
+<li>
+<p>WGS84: Las coordenadas geográficas en el sistema WGS84 se expresan en grados decimales.</p>
+<pre><code>  Ejemplos: - 40.7128° N, 74.0060° W  (formato decimal)
+            - 40° 42' 46.08&quot; N, 74° 0' 21.6&quot; W (formato grado, minuto, segundo)
+</code></pre>
+</li>
+<li>
+<p>UTM: Las coordenadas geográficas en el sistema UTM se expresan en metros.</p>
+<pre><code>  Ejemplo: - 583964.601 4507344.285 (formato metros)
+           - 18T 583964.601 4507344.285 (formato UTM)
+</code></pre>
+</li>
+</ul>
+<blockquote>
+<p>Los valores positivos corresponden al hemisferio norte y al este del meridiano central, mientras que los valores negativos corresponden al hemisferio sur y al oeste del meridiano central.</p>
+</blockquote>
+<blockquote>
+<p>Este sistema programaticamente tiene algunos problemas, ya que la longitud y la latitud son valores angulares, y no lineales. Por lo que para realizar cálculos con coordenadas geográficas, es necesario realizar transformaciones de proyección. Por ejemplo, para calcular la distancia entre dos puntos en coordenadas geográficas, sino se realiza una transformación de proyección, el resultado no será correcto en el caso de distancias largas que implicarán un cambio en la latitud y la longitud. Por ello existen librerias como Turf.js que nos permiten realizar cálculos con coordenadas geográficas.</p>
+</blockquote>
+<h2 id="22-proyecciones-cartográficas">2.2. Proyecciones cartográficas</h2>
+<p>Las proyecciones cartográficas son transformaciones matemáticas que permiten representar la superficie de la Tierra en un plano. Existen diferentes tipos de proyecciones cartográficas, como la proyección cilíndrica, la proyección cónica, la proyección cenital, etc. Cada tipo de proyección cartográfica tiene sus propias características y ventajas, y se utiliza en diferentes contextos y aplicaciones.</p>
+<img src="file:///e:\projects\deck.gl-carto-data-visualization-test\doc\proyecciones.jpg" alt="Proyecciones cartográficas" width="500" style="display: block; margin: 0 auto;"/>
+<blockquote>
+<p>Más info: <a href="http://mapasyotroscuentos.blogspot.com/2016/01/las-proyecciones-cartograficas-o-cuando.html">http://mapasyotroscuentos.blogspot.com/2016/01/las-proyecciones-cartograficas-o-cuando.html</a></p>
+</blockquote>
+<p>Hay que entender, que todas las proyecciones cartográficas tienen distorsiones, y que no existe una proyección cartográfica perfecta.</p>
+<p>En la web, las proyecciones más utilizadas son:</p>
+<ul>
+<li>Proyección WGS84: es una proyección esférica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:4326.</li>
+<li>Proyección Web Mercator: es una proyección cilíndrica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:3857.</li>
+</ul>
+<p>La proyección de Web Mercator es el estándar de facto para aplicaciones de mapas web. Saltó a la fama cuando Google Maps lo adoptó en 2005.​ Es utilizado por prácticamente todos los principales proveedores de mapas en línea, incluidos Google Maps, CARTO, Mapbox,3​ Bing Maps, OpenStreetMap, MapQuest, Esri y muchos otros.</p>
+<p>Aunque en los últimos años, Google Maps en su versión de escritorio ha adoptado la proyección esférica WGS84.</p>
+<p>Normamente cuando importamos un fichero GeoJSON, Shapefile, KML, etc. a una aplicación web, se debe tener en cuenta la proyección del fichero y la proyección del mapa. Si las proyecciones no coinciden, es necesario realizar una transformación de proyección.</p>
+<h2 id="23-formatos-de-datos-geoespaciales">2.3. Formatos de datos geoespaciales</h2>
+<p>Los datos geoespaciales son datos que describen la ubicación de objetos en la superficie de la Tierra. Los datos geoespaciales se pueden representar en diferentes formatos, como GeoJSON, Shapefile, KML, GML, etc. En este pincho, nos centraremos en el formato GeoJSON, que es un formato de datos geoespaciales basado en JSON.</p>
+<p>Además del formato en si, existen diferencias fundamentales entre los datos geoespaciales vectoriales y raster. Esta diferencia se podría enumerar en los siguientes puntos:</p>
+<ul>
+<li>Datos vectoriales: representan la información geográfica como puntos, líneas y polígonos.</li>
+<li>Datos raster: representan la información geográfica como una cuadrícula de celdas.</li>
+<li>MDT (Modelo Digital del Terreno): representan la información geográfica como una cuadrícula de celdas con valores de altitud.</li>
+</ul>
+<p>En cuanto a los formatos:</p>
+<ul>
+<li>GeoJSON: formato de datos geoespaciales basado en JSON.</li>
+<li>Shapefile: formato de datos geoespaciales desarrollado por ESRI.</li>
+<li>KML: formato de datos geoespaciales desarrollado por Google.</li>
+<li>GML: formato de datos geoespaciales basado en XML.</li>
+<li>MDT: Modelo Digital del Terreno.</li>
+<li>GeoTIF: formato de datos geoespaciales raster. (Existen otras variantes como GeoJP2, GeoPNG, etc.)</li>
+</ul>
+<p>Por otra parte estan los servicios de mapas, que son servicios que proporcionan mapas y datos geoespaciales a través de la web. Algunos de los servicios de mapas más conocidos son Google Maps, Bing Maps, OpenStreetMap, Mapbox, etc.</p>
+<p>También existen servidores dedicados, que pueden ser montados en un servidor propio. Algunos de los servidores de mapas más conocidos son GeoServer, MapServer, etc.</p>
+<p>Estos serviciós requiren de un cliente para poder visualizar los datos, y es aquí donde entran en juego las librerías de visualización de datos geoespaciales. Las ás conocidas son Leaflet, OpenLayers, Mapbox GL, <a href="http://Deck.gl">Deck.gl</a>, etc.</p>
+<h2 id="24-base-de-datos-geoespaciales">2.4. Base de datos geoespaciales</h2>
+<p>Las bases de datos geoespaciales son bases de datos que permiten almacenar información geográfica y realizar consultas espaciales. Actualmente, existen diferentes bases de datos geoespaciales, como PostGIS, MongoDB, Cassandra, Oracle Spatial, etc. En este pincho, nos centraremos en PostGIS, que es una extensión espacial para PostgreSQL.</p>
+<p>PostGIS proporciona una serie de funciones y operadores espaciales que permiten realizar consultas espaciales, como la intersección, la unión, la diferencia, el buffer, etc. PostGIS también proporciona un conjunto de funciones y operadores para realizar transformaciones de proyección, simplificar geometrías, calcular áreas y longitudes, etc.</p>
+<img src="file:///e:\projects\deck.gl-carto-data-visualization-test\doc\postgis.png" alt="PostGIS" width="500" style="display: block; margin: 0 auto;"/>
+<p>Ejempos de consultas espaciales:</p>
+<pre><code class="language-sql"><span class="hljs-comment">-- Consulta de todos los polígonos que intersectan con un punto</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> poligonos <span class="hljs-keyword">WHERE</span> ST_Intersects(geom, ST_GeomFromText(<span class="hljs-string">&#x27;POINT(0 0)&#x27;</span>, <span class="hljs-number">4326</span>));
+
+<span class="hljs-comment">-- Cambia la proyección de un polígono</span>
+<span class="hljs-keyword">SELECT</span> ST_Transform(geom, <span class="hljs-number">3857</span>) <span class="hljs-keyword">FROM</span> poligonos;
+
+<span class="hljs-comment">-- Calcula el área de un polígono</span>
+<span class="hljs-keyword">SELECT</span> ST_Area(geom) <span class="hljs-keyword">FROM</span> poligonos;
+
+<span class="hljs-comment">-- Calcula la longitud de una línea</span>
+<span class="hljs-keyword">SELECT</span> ST_Length(geom) <span class="hljs-keyword">FROM</span> lineas;
+
+<span class="hljs-comment">-- Genera un GeoJSON a partir de un polígono</span>
+<span class="hljs-keyword">SELECT</span> ST_AsGeoJSON(geom) <span class="hljs-keyword">FROM</span> poligonos;
+
+<span class="hljs-comment">-- Genera un GeoJSON a partir de un polígono con atributos</span>
+<span class="hljs-keyword">SELECT</span> row_to_json((<span class="hljs-keyword">SELECT</span> d <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> id, nombre, ST_AsGeoJSON(geom) <span class="hljs-keyword">AS</span> geom) <span class="hljs-keyword">AS</span> d)) <span class="hljs-keyword">FROM</span> poligonos;
+
+<span class="hljs-comment">-- Genera un GeoJSON a partir de un polígono con atributos y proyección</span>
+<span class="hljs-keyword">SELECT</span> row_to_json((<span class="hljs-keyword">SELECT</span> d <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> id, nombre, ST_AsGeoJSON(ST_Transform(geom, <span class="hljs-number">3857</span>)) <span class="hljs-keyword">AS</span> geom) <span class="hljs-keyword">AS</span> d)) <span class="hljs-keyword">FROM</span> poligonos;
+
+<span class="hljs-comment">-- tabla: spanish_provinces</span>
+<span class="hljs-comment">-- campos: gid, geom, name</span>
+
+<span class="hljs-comment">-- Consulta que genera un GeoJSON a partir de un polígono con atributos y proyección</span>
+
+<span class="hljs-keyword">SELECT</span> jsonb_build_object(
+    <span class="hljs-string">&#x27;type&#x27;</span>,     <span class="hljs-string">&#x27;FeatureCollection&#x27;</span>,
+    <span class="hljs-string">&#x27;features&#x27;</span>, jsonb_agg(feature)
+)
+<span class="hljs-keyword">FROM</span> (
+  <span class="hljs-keyword">SELECT</span> jsonb_build_object(
+    <span class="hljs-string">&#x27;type&#x27;</span>,       <span class="hljs-string">&#x27;Feature&#x27;</span>,
+    <span class="hljs-string">&#x27;geometry&#x27;</span>,   ST_AsGeoJSON(geom)::jsonb,
+    <span class="hljs-string">&#x27;properties&#x27;</span>, to_jsonb(<span class="hljs-type">row</span>) <span class="hljs-operator">-</span> <span class="hljs-string">&#x27;geom&#x27;</span>
+  ) <span class="hljs-keyword">AS</span> feature
+  <span class="hljs-keyword">FROM</span> (	
+        <span class="hljs-keyword">select</span>
+                gid <span class="hljs-keyword">as</span> cartodb_id,   		
+                geom,
+                name <span class="hljs-keyword">as</span> name
+        <span class="hljs-keyword">from</span>
+                public.spanish_provinces sp  
+  )
+ <span class="hljs-type">row</span>) features;
+  
+
+</code></pre>
+<p>Con un backend que utilice PostGIS, se pueden realizar consultas espaciales y generar GeoJSON a partir de los resultados de las consultas. Los datos geoespaciales en formato GeoJSON se pueden utilizar por ejemplo en <a href="http://Deck.gl">Deck.gl</a> para visualizar los datos en una aplicación web.</p>
+<blockquote>
+<p>PostGIS: <a href="https://postgis.net/">https://postgis.net/</a></p>
+</blockquote>
+<h1 id="3-qgis">3. QGIS</h1>
+<p>QGIS es un Sistema de Información Geográfica (SIG) de código abierto que permite visualizar, editar y analizar datos geoespaciales. QGIS es una herramienta muy potente y versátil que se utiliza en diferentes ámbitos y aplicaciones rivalizando con otros programas de pago como ArcGIS.</p>
+<img src="file:///e:\projects\deck.gl-carto-data-visualization-test\doc\qgis.png" alt="QGIS" width="500" style="display: block; margin: 0 auto;"/>
+<p>Desde el punto de vista como programadores, QGIS es una herramienta muy útil para la edición y visualización de datos geoespaciales. QGIS permite importar y exportar datos geoespaciales en diferentes formatos, realizar análisis espaciales, crear mapas temáticos, etc.</p>
+<p>No es nuestro objetivo la realización de mapas, eso es un trabajo de los cartógrafos, pero si nuestro objetivo la visualización de datos geoespaciales en aplicaciones web, es importante que sepamos cómo se realizan estos trabajos en QGIS para poder entender los datos que vamos a visualizar y poder realizar las transformaciones necesarias.</p>
+<p>Algunas de la funcionalidaes que probablemente tengamos que usar en nuestros proyectos son:</p>
+<ul>
+<li>Importar y exportar datos geoespaciales en diferentes formatos.</li>
+<li>Realizar transformaciones de proyección.</li>
+<li>Añadir y editar atributos de datos geoespaciales.</li>
+<li>Combinar o dividir capas de datos geoespaciales.</li>
+<li>Simplificar o generalizar geometrías.</li>
+</ul>
+<blockquote>
+<p>QGIS: <a href="https://www.qgis.org/">https://www.qgis.org/</a></p>
+</blockquote>
+<h1 id="4-formato-geojson">4. Formato GeoJSON</h1>
+<p>El formato GeoJSON es un formato de datos geoespaciales basado en JSON, permite representar diferentes tipos de geometrías, como puntos, líneas y polígonos, y también permite representar atributos asociados a las geometrías.</p>
+<p>El formato GeoJSON se compone de dos tipos de objetos:</p>
+<ul>
+<li>Geometrías: representan la forma y la ubicación de los objetos geoespaciales.</li>
+<li>Atributos: representan la información asociada a los objetos geoespaciales.</li>
+</ul>
+<p>Un ejemplo de un objeto GeoJSON es el siguiente:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;FeatureCollection&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;features&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Feature&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// Tipo de objeto (Feature, FeatureCollection)</span>
+      <span class="hljs-attr">&quot;geometry&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Point&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-comment">// Tipo de geometría (Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon)</span>
+        <span class="hljs-attr">&quot;coordinates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">102.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.5</span><span class="hljs-punctuation">]</span> <span class="hljs-comment">// Coordenadas de la geometría</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;prop0&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;value0&quot;</span> <span class="hljs-comment">// Atributos asociados a la geometría</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Feature&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;geometry&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;LineString&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;coordinates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+          <span class="hljs-punctuation">[</span><span class="hljs-number">102.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-punctuation">[</span><span class="hljs-number">103.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">1.0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-punctuation">[</span><span class="hljs-number">104.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+          <span class="hljs-punctuation">[</span><span class="hljs-number">105.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">1.0</span><span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">]</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;prop0&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;value0&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;prop1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.0</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Feature&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;geometry&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Polygon&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;coordinates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+          <span class="hljs-punctuation">[</span>
+            <span class="hljs-punctuation">[</span><span class="hljs-number">100.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">[</span><span class="hljs-number">101.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">[</span><span class="hljs-number">101.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">1.0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">[</span><span class="hljs-number">100.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">1.0</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+            <span class="hljs-punctuation">[</span><span class="hljs-number">100.0</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.0</span><span class="hljs-punctuation">]</span>
+          <span class="hljs-punctuation">]</span>
+        <span class="hljs-punctuation">]</span>
+      <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">&quot;prop0&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;value0&quot;</span><span class="hljs-punctuation">,</span>
+        <span class="hljs-attr">&quot;prop1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+          <span class="hljs-attr">&quot;this&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;that&quot;</span>
+        <span class="hljs-punctuation">}</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Por lo que la estructura de un fichero GeoJSON es la siguiente:</p>
+<ul>
+<li>Tipo de objeto:
+<ul>
+<li><strong>Feature</strong>: representa un objeto geoespacial individual.</li>
+<li><strong>FeatureCollection</strong>: representa una colección de objetos geoespaciales.</li>
+</ul>
+</li>
+<li>Geometría:
+<ul>
+<li><strong>Point</strong>: representa un punto.</li>
+<li><strong>LineString</strong>: representa una línea.</li>
+<li><strong>Polygon</strong>: representa un polígono.</li>
+<li><strong>MultiPoint</strong>: representa una colección de puntos.</li>
+<li><strong>MultiLineString</strong>: representa una colección de líneas.</li>
+<li><strong>MultiPolygon</strong>: representa una colección de polígonos.</li>
+</ul>
+</li>
+</ul>
+<img src="file:///e:\projects\deck.gl-carto-data-visualization-test\doc\simple_feature_types.png" alt="Tipos de geometrías" width="500" style="display: block; margin: 0 auto; background-color: #FFF; padding: 20px;"/>
+<ul>
+<li>Atributos: representan la información asociada a los objetos geoespaciales. Los atributos se representan como pares clave-valor, pueden ser de diferentes tipos, como texto, número, booleano, etc.</li>
+</ul>
+<h1 id="5-deckgl-demo">5. @deck.gl Demo</h1>
+<p>Aplicación de prueba de <a href="http://Deck.gl">Deck.gl</a> usando React. La aplicación se ha dividido en diferentes componentes de React que se comunican entre sí. En el panel de herramientas, se pueden realizar las siguientes modificaciones en el mapa:</p>
+<ul>
+<li>Cambiar vista (Mostrar GeoJsonLayer)</li>
+<li>Seleccionar el continente</li>
+<li>Grosor de la línea</li>
+<li>Escala de altura del color</li>
+<li>Color de la línea</li>
+<li>Color del polígono (el color será más oscuro dependiendo del nivel de población del país)</li>
+<li>Tabla con información del país al colocar el mouse sobre el polígono</li>
+<li>Leyenda de población y conteo de países por continente</li>
+</ul>
+<p>Otras características que aún tengo que explorar:</p>
+<ul>
+<li>Probar algunos otros componentes como ArcLayer, HexagonLayer, GridCellLayer, etc.</li>
+<li>Poder seleccionar las capas que se mostrarán y hacer zoom en el alcance de cada una.</li>
+</ul>
+<p>Aplicación de prueba en <a href="http://aaranda.es/static/deckgl/">http://aaranda.es/static/deckgl/</a></p>
+
+            
+            
+        </body>
+        </html>

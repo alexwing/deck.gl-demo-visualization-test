@@ -5,9 +5,23 @@
   - [2.3. Formatos de datos geoespaciales](#23-formatos-de-datos-geoespaciales)
   - [2.4. Base de datos geoespaciales](#24-base-de-datos-geoespaciales)
 - [3. QGIS](#3-qgis)
+    - [Importar y exportar datos geoespaciales en diferentes formatos.](#importar-y-exportar-datos-geoespaciales-en-diferentes-formatos)
+    - [Realizar transformaciones de proyección.](#realizar-transformaciones-de-proyección)
+    - [Añadir y editar atributos de datos geoespaciales.](#añadir-y-editar-atributos-de-datos-geoespaciales)
+    - [Combinar o dividir capas de datos geoespaciales.](#combinar-o-dividir-capas-de-datos-geoespaciales)
+    - [Simplificar geometrías](#simplificar-geometrías)
 - [4. Formato GeoJSON](#4-formato-geojson)
 - [5. @deck.gl](#5-deckgl)
+  - [5.1. Capas de visualización](#51-capas-de-visualización)
+  - [5.2. Mapa Base](#52-mapa-base)
 - [6. Aplicación de demostración de Deck.gl](#6-aplicación-de-demostración-de-deckgl)
+  - [6.1. Características clave](#61-características-clave)
+  - [6.2. Uso](#62-uso)
+  - [6.3. Demostración en vivo](#63-demostración-en-vivo)
+  - [6.4. Estructura del código](#64-estructura-del-código)
+    - [6.4.1. Detalles técnicos:](#641-detalles-técnicos)
+    - [6.4.2. Mejoras futuras:](#642-mejoras-futuras)
+  - [6.5. Consideraciones a tener en cuenta:\*\*](#65-consideraciones-a-tener-en-cuenta)
 
 
 # 1. Pincho sobre Cartografía, React y Deck.gl
@@ -41,7 +55,7 @@ Los sistemas de coordenadas geográficas más utilizados son:
 
 > Los valores positivos corresponden al hemisferio norte y al este del meridiano central, mientras que los valores negativos corresponden al hemisferio sur y al oeste del meridiano central.
 
-> Este sistema programaticamente tiene algunos problemas, ya que la longitud y la latitud son valores angulares, y no lineales. Por lo que para realizar cálculos con coordenadas geográficas, es necesario realizar transformaciones de proyección. Por ejemplo, para calcular la distancia entre dos puntos en coordenadas geográficas, sino se realiza una transformación de proyección, el resultado no será correcto en el caso de distancias largas que implicarán un cambio en la latitud y la longitud. Por ello existen librerias como Turf.js que nos permiten realizar cálculos con coordenadas geográficas.
+> Este sistema programaticamente tiene algunos problemas, ya que la longitud y la latitud son valores angulares, y no lineales. Por lo que para realizar cálculos con coordenadas geográficas, es necesario realizar transformaciones de proyección. Por ejemplo, para calcular la distancia entre dos puntos en coordenadas geográficas, sino se realiza una transformación de proyección, el resultado no será correcto en el caso de distancias largas que implicarán un cambio en la latitud y la longitud. Por ello existen librerías como Turf.js que nos permiten realizar cálculos con coordenadas geográficas.
 
 ## 2.2. Proyecciones cartográficas
 
@@ -83,11 +97,11 @@ En cuanto a los formatos:
 - MDT: Modelo Digital del Terreno.
 - GeoTIF: formato de datos geoespaciales raster. (Existen otras variantes como GeoJP2, GeoPNG, etc.)
 
-Por otra parte estan los servicios de mapas, que son servicios que proporcionan mapas y datos geoespaciales a través de la web. Algunos de los servicios de mapas más conocidos son Google Maps, Bing Maps, OpenStreetMap, Mapbox, etc.
+Por otra parte están los servicios de mapas, que son servicios que proporcionan mapas y datos geoespaciales a través de la web. Algunos de los servicios de mapas más conocidos son Google Maps, Bing Maps, OpenStreetMap, Mapbox, etc.
 
 También existen servidores dedicados, que pueden ser montados en un servidor propio. Algunos de los servidores de mapas más conocidos son GeoServer, MapServer, etc.
 
-Estos serviciós requiren de un cliente para poder visualizar los datos, y es aquí donde entran en juego las librerías de visualización de datos geoespaciales. Las más conocidas son Leaflet, OpenLayers, Mapbox GL, Deck.gl, etc.
+Estos servicios requieren de un cliente para poder visualizar los datos, y es aquí donde entran en juego las librerías de visualización de datos geoespaciales. Las más conocidas son Leaflet, OpenLayers, Mapbox GL, Deck.gl, etc.
 
 ## 2.4. Base de datos geoespaciales
 
@@ -98,7 +112,7 @@ PostGIS proporciona una serie de funciones y operadores espaciales que permiten 
 
 <img src="./doc/postgis.png" alt="PostGIS" width="500" style="display: block; margin: 0 auto;"/>
 
-Ejempos de consultas espaciales:
+Ejemplos de consultas espaciales:
         
 ```sql
 -- Consulta de todos los polígonos que intersectan con un punto
@@ -163,17 +177,51 @@ QGIS es un Sistema de Información Geográfica (SIG) de código abierto que perm
 
 Desde el punto de vista como programadores, QGIS es una herramienta muy útil para la edición y visualización de datos geoespaciales. QGIS permite importar y exportar datos geoespaciales en diferentes formatos, realizar análisis espaciales, crear mapas temáticos, etc. 
 
+> QGIS: https://www.qgis.org/
+
 No es nuestro objetivo la realización de mapas, eso es un trabajo de los cartógrafos, pero si es nuestro objetivo la visualización de datos geoespaciales en aplicaciones web, es importante que sepamos cómo se realizan estos trabajos en QGIS para poder entender los datos que vamos a visualizar y poder realizar las transformaciones necesarias.
 
 Algunas de la funcionalidaes que probablemente tengamos que usar en nuestros proyectos son:
 
-- Importar y exportar datos geoespaciales en diferentes formatos.
-- Realizar transformaciones de proyección.
-- Añadir y editar atributos de datos geoespaciales.
-- Combinar o dividir capas de datos geoespaciales.
-- Simplificar o generalizar geometrías.
+### Importar y exportar datos geoespaciales en diferentes formatos.
+
+Para importar datos geoespaciales en QGIS hay muchas maneras, pero por lo general basta con arrastrar el archivo a la ventana de QGIS. Luego hay un montón de opciones para importar desde bases de datos, servicios web, etc.
+
+Para exportar datos geoespaciales en QGIS, se puede hacer clic derecho sobre la capa y seleccionar "Exportar" y luego seleccionar el formato de salida.
+
+<img src="./doc/exportar.gif" alt="Importar y exportar datos geoespaciales en QGIS" width="500" style="display: block; margin: 0 auto;"/>
+
+### Realizar transformaciones de proyección.
+
+Para realizar transformaciones de proyección en QGIS, ir a la opción "Vectorial" y seleccionar "Herramientas gestión de datos" y luego "Reproyectar capa". Luego seleccionar la proyección de salida deseada y hacer clic en "Aceptar".
+
+<img src="./doc/reproyectar.gif" alt="Transformación de proyección en QGIS" width="500" style="display: block; margin: 0 auto;"/>
+
+### Añadir y editar atributos de datos geoespaciales.
+
+Para editar atributos de datos geoespaciales en QGIS, hacer clic sobre el icono de edición de atributos, para añadir un nuevo atributo, hacer clic derecho sobre la capa y seleccionar "propiedades" y luego "campos". 
+
+<img src="./doc/atributos.gif" alt="Añadir y editar atributos de datos geoespaciales" width="500" style="display: block; margin: 0 auto;"/>
+
+### Combinar o dividir capas de datos geoespaciales.
+
+Para dividir capas de datos geoespaciales en QGIS basta con seleccionar los elementos que se quieren dividir y exportar con la opción de solo los elementos seleccionados.
+
+Para combinar capas de datos geoespaciales en QGIS, hacer clic en vectorial y seleccionar "Herramientas de geoproceso" y luego "Unión".
+
+<img src="./doc/union.gif" alt="Combinar o dividir capas de datos geoespaciales" width="500" style="display: block; margin: 0 auto;"/>
+
+### Simplificar geometrías
+
+Para simplificar geometrías en QGIS, hacer clic en vectorial y seleccionar "Herramientas de geometría" y luego "Simplificar".
+
+A menudo en necesario/recomendado esta simplificación para reducir el tamaño de los datos y mejorar el rendimiento de la aplicación web.
+
+<img src="./doc/simplificar.gif" alt="Simplificar geometrías en QGIS" width="500" style="display: block; margin: 0 auto;"/>
+
+
+
   
-> QGIS: https://www.qgis.org/
 
 # 4. Formato GeoJSON
 
@@ -263,20 +311,21 @@ Por lo que la estructura de un fichero GeoJSON es la siguiente:
 
 Deck.gl es un framework de visualización con tecnología de WebGL que proporciona una variedad de visualizaciones de datos en 2D y 3D fáciles de usar y compatibles con grandes conjuntos de datos.
 
+## 5.1. Capas de visualización
 
-Las capas en deck.gl se dividen en varias categorías:
+Las capas en deck.gl se definen en cuatro categorías:
 
-1. Capas Básicas: Son las capas fundamentales que se utilizan como bloques de construcción para visualizaciones de datos. Incluyen capas como ArcLayer, BitmapLayer, ColumnLayer, etc.
+1. **Core Layers:**: Las capas principales son fundamentales para visualizaciones de datos genéricas y son las más estables y compatibles con deck.gl. como GeoJsonLayer, ScatterplotLayer, etc.
+   
+2. **Aggregation Layers:**: Estas capas agregan datos de entrada y los visualizan en representaciones alternativas como cuadrículas, hexágonos, contornos y mapas de calor. como pueden ser GridLayer, HexagonLayer, ContourLayer, HeatmapLayer, etc.
 
-2. Capas de Agregación: Estas capas agregan datos de entrada y los visualizan en representaciones alternativas, como cuadrículas, binning hexagonal, contornos y mapas de calor.
+3. **Geo Layers:**: Estas capas se centran en visualizaciones geoespaciales y admiten formatos y sistemas de indexación populares. por ejemplo:
+     - TileLayer: Para mostrar mapas basados en mosaicos de teselas.
+     - TripsLayer: Para visualizar trayectorias de movimiento a lo largo del tiempo.
 
-3. Capas Geoespaciales: Dirigidas específicamente a la visualización de datos geoespaciales, incluyendo soporte para teselas de mapas, sistemas de indexación geoespacial populares, formatos GIS, etc.
-
-4. Capas de Malla: Visualizan modelos 3D, con soporte experimental para escenas en formato glTF.
-
-Cada categoría tiene su conjunto de capas especializadas que se adaptan a diferentes necesidades de visualización de datos.
-
-Algunas de las más comunes son:
+4. **Mesh Layers:** Estas capas permiten la visualización de modelos 3D, con soporte experimental para escenas en formato glTF.SimpleMeshLayer y ScenegraphLayer
+  
+Alguna de las capas más comunes son:
 
 - **GeoJsonLayer**: Renderiza datos geoespaciales en formato GeoJSON.
 - **IconLayer**: Representa iconos rasterizados en coordenadas dadas. 
@@ -284,13 +333,20 @@ Algunas de las más comunes son:
 - **BitmapLayer**: Renderiza imágenes georreferenciadas.
 - **ArcLayer**: Renderiza arcos elevados que unen pares de coordenadas de origen y destino.
 - **ColumnLayer**: Renderiza cilindros extruidos (polígonos regulares teselados) en coordenadas dadas. 
-- **GridCellLayer**: Aagrega datos en un mapa de calor basado en cuadrícula.
-y muchas más... 
-
+  
 > Más info: https://deck.gl/docs/api-reference/layers
 
+## 5.2. Mapa Base
 
-Para añadir de fondo un mapa estático, se puede utilizar el componente `StaticMap` que proporciona Deck.gl. Este componente permite añadir un mapa estático de Mapbox, Google Maps, OpenStreetMap, etc.
+Los mapas base ofrecen contexto para visualizar datos geoespaciales. deck.gl se integra con diversos proveedores de mapas base mediante dos métodos:
+
+1. **Superpuesto:** Deck se muestra sobre el mapa base como un elemento independiente. Es robusto y adecuado para mapas 2D.
+
+2. **Entrelazado:** Deck se integra con el contexto WebGL del mapa base, permitiendo la ocultación entre capas. La disponibilidad depende de las API del proveedor. 
+
+
+> Más info: https://deck.gl/docs/get-started/using-with-map
+
 
 ```jsx
 import { DeckGL } from '@deck.gl/react';
@@ -341,7 +397,7 @@ const INITIAL_VIEW_STATE = {
 
 Esta aplicación React demuestra las capacidades de Deck.gl para la visualización geoespacial interactiva. Permite a los usuarios explorar datos de población mundial, filtrar por continente, ajustar parámetros de estilo y mostrar información adicional al pasar el cursor.
 
-**Características clave:**
+## 6.1. Características clave
 
 - **Mapa interactivo:** Utiliza `react-map-gl` para renderizar un mapa base y posicionar la visualización.
 - **Datos de población mundial:** Aprovecha las capas GeoJSON para mostrar las fronteras mundiales y los datos de población.
@@ -349,7 +405,7 @@ Esta aplicación React demuestra las capacidades de Deck.gl para la visualizaci�
 - **Estilo dinámico:** Proporciona controles para ajustar el ancho de línea, las escalas de color y la elevación en función de la población.
 - **Interacciones al pasar el cursor:** Muestra información detallada sobre los países al pasar el cursor, incluidas las estimaciones de población.
 
-**Uso:**
+## 6.2. Uso
 
 1. **Clonar el repositorio:**
    ```bash
@@ -365,11 +421,11 @@ Esta aplicación React demuestra las capacidades de Deck.gl para la visualizaci�
    npm start
    ```
 
-**Demostración en vivo:**
+## 6.3. Demostración en vivo
 
 Visite [enlace a la demostración en vivo] para experimentar la aplicación de forma interactiva.
 
-**Estructura del código:**
+## 6.4. Estructura del código
 
 - `App.tsx`: El componente principal que renderiza la aplicación y maneja el estado global.
 - `DeckMap.tsx`: El componente principal responsable de renderizar el mapa, las capas y manejar las interacciones del usuario.
@@ -378,18 +434,18 @@ Visite [enlace a la demostración en vivo] para experimentar la aplicación de f
 - `MenuTop.tsx`: El componente que proporciona controles para seleccionar dos vistas predefinidas.
 - `db/`: Almacena los archivos de datos GeoJSON (`vancouver-blocks.geojson`, `world-population.geojson`, `spain.geojson`).
 
-**Detalles técnicos:**
+### 6.4.1. Detalles técnicos:
 
 - **Bibliotecas:** React, react-map-gl, Deck.gl
 - **Formato de datos:** GeoJSON
 
-**Mejoras futuras:**
+### 6.4.2. Mejoras futuras:
 
 - Explorar capas Deck.gl adicionales como ArcLayer, HexagonLayer y GridCellLayer.
 - Implementar la funcionalidad de zoom para ajustar a capas específicas o datos filtrados.
 - Integrar una leyenda para visualizar la escala de color y la distribución de la población.
 
-**Consideraciones a tener en cuenta:**
+## 6.5. Consideraciones a tener en cuenta:**
 
 Usar la versión de "react-map-gl": "5.3.21" ya que a partir de la versión 6.0.0, se requiere una clave de acceso a Mapbox para usar el servicio de mapas. Ya existen un proyecto de código abierto llamado mapLibre que permite usar mapas de Mapbox sin necesidad de una clave de acceso, pero aun no es compatible con "react-map-gl".
 
