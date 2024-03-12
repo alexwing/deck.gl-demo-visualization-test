@@ -21,7 +21,7 @@
   - [6.3. Demostración en vivo](#63-demostración-en-vivo)
   - [6.4. Estructura del código](#64-estructura-del-código)
     - [6.4.1. Detalles técnicos](#641-detalles-técnicos)
-    - [6.4.2. Mejoras futuras](#642-mejoras-futuras)
+    - [6.4.2. Mejoras futuras de este ejemplo](#642-mejoras-futuras-de-este-ejemplo)
   - [6.5. Consideraciones a tener en cuenta](#65-consideraciones-a-tener-en-cuenta)
 
 
@@ -442,10 +442,9 @@ Visite [enlace a la demostración en vivo] para experimentar la aplicación de f
 - **Bibliotecas:** React, react-map-gl, Deck.gl
 - **Formato de datos:** GeoJSON
 
-### 6.4.2. Mejoras futuras
+### 6.4.2. Mejoras futuras de este ejemplo
 
 - Explorar capas Deck.gl adicionales como ArcLayer, HexagonLayer y GridCellLayer.
-- Implementar la funcionalidad de zoom para ajustar a capas específicas o datos filtrados.
 - Integrar una leyenda para visualizar la escala de color y la distribución de la población.
 
 ## 6.5. Consideraciones a tener en cuenta
