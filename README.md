@@ -171,7 +171,7 @@ With a backend that uses PostGIS, spatial queries can be performed and GeoJSON c
 
 QGIS is an open-source Geographic Information System (GIS) that allows visualization, editing, and analysis of geospatial data. QGIS is a powerful and versatile tool used in various fields and applications, competing with other paid programs such as ArcGIS.
 
-<img src="./doc/qgis.png" alt="QGIS" width="500" style="display: block; margin: 0 auto;"/>
+<img src="./doc/QGis.png" alt="QGIS" width="500" style="display: block; margin: 0 auto;"/>
 
 From a programmer's point of view, QGIS is a very useful tool for editing and visualizing geospatial data. QGIS allows importing and exporting geospatial data in different formats, performing spatial analysis, creating thematic maps, etc.
 

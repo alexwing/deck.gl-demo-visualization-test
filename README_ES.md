@@ -174,7 +174,7 @@ Con un backend que utilice PostGIS, se pueden realizar consultas espaciales y ge
 
 QGIS es un Sistema de Información Geográfica (SIG) de código abierto que permite visualizar, editar y analizar datos geoespaciales. QGIS es una herramienta muy potente y versátil que se utiliza en diferentes ámbitos y aplicaciones rivalizando con otros programas de pago como ArcGIS.
 
-<img src="./doc/qgis.png" alt="QGIS" width="500" style="display: block; margin: 0 auto;"/>
+<img src="./doc/QGis.png" alt="QGIS" width="500" style="display: block; margin: 0 auto;"/>
 
 Desde el punto de vista como programadores, QGIS es una herramienta muy útil para la edición y visualización de datos geoespaciales. QGIS permite importar y exportar datos geoespaciales en diferentes formatos, realizar análisis espaciales, crear mapas temáticos, etc. 
 
