@@ -47,16 +47,20 @@ Los sistemas de coordenadas geográficas más utilizados son:
   
         Ejemplos: - 40.7128° N, 74.0060° W  (formato decimal)
                   - 40° 42' 46.08" N, 74° 0' 21.6" W (formato grado, minuto, segundo)
+> Los valores positivos corresponden al hemisferio norte y al este del meridiano central, mientras que los valores negativos corresponden al hemisferio sur y al oeste del meridiano central.
 
 - UTM: Las coordenadas geográficas en el sistema UTM se expresan en metros.
   
-        Ejemplo: - 583964.601 4507344.285 (formato metros)
-                 - 18T 583964.601 4507344.285 (formato UTM)
+        Ejemplo: 18T 583964.601 4507344.285 (formato UTM)
+                     - 18: indica el huso UTM.
+                     - T: indica la letra de la banda UTM.
+                     - 583964.601: indica la coordenada X en metros.
+                     - 4507344.285: indica la coordenada Y en metros.
+                     
 
+> Las zonas UTM se dividen en 60 husos, cada uno de 6 grados de longitud. Cada huso se divide en 20 bandas, cada una de 8 grados de latitud. Las coordenadas UTM se expresan en metros, y se miden desde el ecuador y el meridiano central del huso.
 
-> Los valores positivos corresponden al hemisferio norte y al este del meridiano central, mientras que los valores negativos corresponden al hemisferio sur y al oeste del meridiano central.
-
-> Este sistema programaticamente tiene algunos problemas, ya que la longitud y la latitud son valores angulares, y no lineales. Por lo que para realizar cálculos con coordenadas geográficas, es necesario realizar transformaciones de proyección. Por ejemplo, para calcular la distancia entre dos puntos en coordenadas geográficas, sino se realiza una transformación de proyección, el resultado no será correcto en el caso de distancias largas que implicarán un cambio en la latitud y la longitud. Por ello existen librerías como Turf.js que nos permiten realizar cálculos con coordenadas geográficas.
+> Los sistemas de coordenadas geográficas no pueden utilizarse como vectores para realizar cálculos matemáticos, ya que no son lineales. Por lo que es necesario utilizar librerías como Turf.js para realizar cálculos con coordenadas geográficas.
 
 ## 2.2. Proyecciones cartográficas
 
