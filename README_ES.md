@@ -74,8 +74,8 @@ Hay que entender, que todas las proyecciones cartográficas tienen distorsiones,
 
 En la web, las proyecciones más utilizadas son:
 
-- Proyección WGS84: es una proyección esférica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:4326.
-- Proyección Web Mercator: es una proyección cilíndrica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:3857.
+- **Proyección WGS84**: es una proyección esférica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:4326.
+- **Proyección Web Mercator**: es una proyección cilíndrica que se utiliza para la representación de la Tierra en la web. su codificación es EPSG:3857.
 
 La proyección de Web Mercator es el estándar de facto para aplicaciones de mapas web. Saltó a la fama cuando Google Maps lo adoptó en 2005.​ Es utilizado por prácticamente todos los principales proveedores de mapas en línea, incluidos Google Maps, CARTO, Mapbox,3​ Bing Maps, OpenStreetMap, MapQuest, Esri y muchos otros.
 
@@ -89,18 +89,18 @@ Los datos geoespaciales son datos que describen la ubicación de objetos en la s
 
 Además del formato en si, existen diferencias fundamentales entre los datos geoespaciales vectoriales y raster. Esta diferencia se podría enumerar en los siguientes puntos:
 
-- Datos vectoriales: representan la información geográfica como puntos, líneas y polígonos.
-- Datos raster: representan la información geográfica como una cuadrícula de celdas.
-- MDT (Modelo Digital del Terreno): representan la información geográfica como una cuadrícula de celdas con valores de altitud.
+- **Datos vectoriales**: representan la información geográfica como puntos, líneas y polígonos.
+- **Datos raster**: representan la información geográfica como una cuadrícula de celdas.
+- **MDT** (Modelo Digital del Terreno): representan la información geográfica como una cuadrícula de celdas con valores de altitud.
 
 En cuanto a los formatos:
 
-- GeoJSON: formato de datos geoespaciales basado en JSON.
-- Shapefile: formato de datos geoespaciales desarrollado por ESRI.
-- KML: formato de datos geoespaciales desarrollado por Google.
-- GML: formato de datos geoespaciales basado en XML.
-- MDT: Modelo Digital del Terreno.
-- GeoTIF: formato de datos geoespaciales raster. (Existen otras variantes como GeoJP2, GeoPNG, etc.)
+- **GeoJSON**: formato de datos geoespaciales basado en JSON.
+- **Shapefile**: formato de datos geoespaciales desarrollado por ESRI.
+- **KML**: formato de datos geoespaciales desarrollado por Google.
+- **GML**: formato de datos geoespaciales basado en XML.
+- **MDT**: Modelo Digital del Terreno.
+- **GeoTIF**: formato de datos geoespaciales raster. (Existen otras variantes como GeoJP2, GeoPNG, etc.)
 
 Por otra parte están los servicios de mapas, que son servicios que proporcionan mapas y datos geoespaciales a través de la web. Algunos de los servicios de mapas más conocidos son Google Maps, Bing Maps, OpenStreetMap, Mapbox, etc.
 
@@ -237,8 +237,8 @@ El formato GeoJSON es un formato de datos geoespaciales basado en JSON, permite 
 
 El formato GeoJSON se compone de dos tipos de objetos:
 
-- Geometrías: representan la forma y la ubicación de los objetos geoespaciales.
-- Atributos: representan la información asociada a los objetos geoespaciales.
+- **Geometrías**: representan la forma y la ubicación de los objetos geoespaciales.
+- **Atributos**: representan la información asociada a los objetos geoespaciales.
   
 Un ejemplo de un objeto GeoJSON es el siguiente:
 
